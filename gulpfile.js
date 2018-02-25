@@ -21,5 +21,6 @@ gulp.task('sass', function() {
 
 gulp.task('watch', function() {
   gulp.watch('public/components/*.jsx', ['reactify']);
+  gulp.watch('public/services/*.js', ['reactify']);
   gulp.watch('public/scss/*.scss', ['sass']);
 });

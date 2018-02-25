@@ -22392,7 +22392,8 @@ if (process.env.NODE_ENV === 'production') {
 },{"./cjs/react.development.js":55,"./cjs/react.production.min.js":56,"_process":46}],58:[function(require,module,exports){
 var React = require('react');
 var ReactDOM = require('react-dom');
-var axios = require('axios');
+var api = require('../services/api');
+
 // child components
 var ContactList = require('./contact_list.jsx');
 // var Contact = require('./contact.jsx');
@@ -22415,26 +22416,26 @@ class AddressBook extends React.Component {
 
   getContacts() {
     var that = this;
-    axios.get('/graphql?query={contacts{contactId,firstname,lastname}}')
-      .then(function(response) {
-        var data = response.data.data.contacts;
-        that.setState({ contacts: data });
-      })
+    api.get('contacts', {}, 'contactId,firstname,lastname')
+       .then(function(response) {
+         var data = response.data.data.contacts;
+         that.setState({ contacts: data });
+       });
   }
 
   getContact(e) {
     var id = e.target.getAttribute('data-id');
     var that = this;
-    axios.get(`/graphql?query={contact(contactId: ${id}){contactId,firstname,lastname,email,phone,address}}`)
-         .then(function(response) {
-           that.setState({
-             contact: response.data.data.contact,
-             contactLoaded: true
-           });
-         })
-         .catch(function(error) {
-          console.log(error);
+    api.get('contact',{contactId: id})
+       .then(function(response) {
+         that.setState({
+           contact: response.data.data.contact,
+           contactLoaded: true
          });
+       })
+       .catch(function(error) {
+        console.log(error);
+       });
   }
 
   render() {
@@ -22465,7 +22466,7 @@ class AddressBook extends React.Component {
 
 ReactDOM.render(React.createElement(AddressBook, null), document.getElementById('container'));
 
-},{"./contact_list.jsx":59,"axios":1,"react":57,"react-dom":54}],59:[function(require,module,exports){
+},{"../services/api":60,"./contact_list.jsx":59,"react":57,"react-dom":54}],59:[function(require,module,exports){
 var React = require('react');
 var axios = require('axios');
 
@@ -22499,4 +22500,36 @@ class ContactList extends React.Component {
 
 module.exports = ContactList;
 
-},{"axios":1,"react":57}]},{},[58]);
+},{"axios":1,"react":57}],60:[function(require,module,exports){
+var axios = require('axios');
+
+var api = {
+  apiUrl: '/graphql?query=',
+  fields: 'contactId,firstname,lastname,email,phone,address',
+
+  // build graphQL query
+  // output is a string in the format '/graphql?query={resourece(key:value){field1,field2}}'
+  buildQuery: function(resource,fields=this.fields, filters={}) {
+    var params = `{${fields}}`;
+    var searchFilters = this.paramString(filters);
+    return this.apiUrl + `{${resource}${searchFilters}${params}}`;
+  },
+
+  // input params is an object
+  // output is a string in the format 'key1:value1,key2:value2'
+  paramString: function(params) {
+    if (Object.keys(params).length == 0) { return ''; }
+    var paramStringArr = Object.keys(params).map(function(key) {
+                           return [key, params[key]].join(':');
+                        });
+    return `(${paramStringArr.join(',')})`;
+  },
+
+  get: function(resource, filters={}, fields=this.fields) {
+    return axios.get(this.buildQuery(resource, fields, filters));
+  }
+}
+
+module.exports = api;
+
+},{"axios":1}]},{},[58]);

@@ -1,6 +1,7 @@
 var React = require('react');
 var ReactDOM = require('react-dom');
-var axios = require('axios');
+var api = require('../services/api');
+
 // child components
 var ContactList = require('./contact_list.jsx');
 // var Contact = require('./contact.jsx');
@@ -23,26 +24,26 @@ class AddressBook extends React.Component {
 
   getContacts() {
     var that = this;
-    axios.get('/graphql?query={contacts{contactId,firstname,lastname}}')
-      .then(function(response) {
-        var data = response.data.data.contacts;
-        that.setState({ contacts: data });
-      })
+    api.get('contacts', {}, 'contactId,firstname,lastname')
+       .then(function(response) {
+         var data = response.data.data.contacts;
+         that.setState({ contacts: data });
+       });
   }
 
   getContact(e) {
     var id = e.target.getAttribute('data-id');
     var that = this;
-    axios.get(`/graphql?query={contact(contactId: ${id}){contactId,firstname,lastname,email,phone,address}}`)
-         .then(function(response) {
-           that.setState({
-             contact: response.data.data.contact,
-             contactLoaded: true
-           });
-         })
-         .catch(function(error) {
-          console.log(error);
+    api.get('contact',{contactId: id})
+       .then(function(response) {
+         that.setState({
+           contact: response.data.data.contact,
+           contactLoaded: true
          });
+       })
+       .catch(function(error) {
+        console.log(error);
+       });
   }
 
   render() {
