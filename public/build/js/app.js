@@ -22401,8 +22401,11 @@ var ContactList = require('./contact_list.jsx');
 class AddressBook extends React.Component {
   constructor(props) {
     super(props);
+    this.getContact = this.getContact.bind(this);
     this.state = {
-      contacts: []
+      contacts: [],
+      contact: {},
+      contactLoaded: false
     }
   }
 
@@ -22413,16 +22416,46 @@ class AddressBook extends React.Component {
   getContacts() {
     var that = this;
     axios.get('/graphql?query={contacts{contactId,firstname,lastname}}')
-      .then(function(response) {  
+      .then(function(response) {
         var data = response.data.data.contacts;
         that.setState({ contacts: data });
       })
   }
 
+  getContact(e) {
+    var id = e.target.getAttribute('data-id');
+    var that = this;
+    axios.get(`/graphql?query={contact(contactId: ${id}){contactId,firstname,lastname,email,phone,address}}`)
+         .then(function(response) {
+           that.setState({
+             contact: response.data.data.contact,
+             contactLoaded: true
+           });
+         })
+         .catch(function(error) {
+          console.log(error);
+         });
+  }
+
   render() {
-    return (
-      React.createElement("div", {className: "column is-4"}, 
-        React.createElement(ContactList, {contacts: JSON.stringify(this.state.contacts)})
+      var contacts = JSON.stringify(this.state.contacts);
+      var that = this;
+      return (
+      React.createElement("div", null, 
+        React.createElement("div", {className: "column is-4"}, 
+          React.createElement("h4", null, "All Contacts"), 
+          React.createElement("input", {type: "text", placeholder: "Search"}), 
+          
+            JSON.parse(contacts).map(function(contact) {
+              return (
+                React.createElement("div", {onClick: that.getContact, "data-id": contact.contactId}, 
+                  contact.lastname, ", ", contact.firstname
+                )
+              )
+            })
+          
+        ), 
+         this.state.contactLoaded && React.createElement(ContactList, {contact: this.state.contact})
       )
     )
   }
@@ -22437,36 +22470,18 @@ var axios = require('axios');
 class ContactList extends React.Component {
   constructor(props) {
     super(props);
-    this.getContact = this.getContact.bind(this);
-  } 
-
-  getContact(e) {
-    var id = e.target.getAttribute('data-id');
-    axios.get(`/graphql?query={contact(contactId: ${id}){contactId,firstname,lastname,email}}`)
-         .then(function(response) { 
-           console.log(response.data);
-           return response.data;
-         })
-         .catch(function(error) {
-          console.log(error);
-         });
   }
 
   render() {
-    var contacts = JSON.parse(this.props.contacts);
-    var that = this;
+    var contact = this.props.contact;
     return (
-      React.createElement("div", null, 
-        
-          contacts.map(function(contact) {
-            return (
-              React.createElement("div", {onClick: that.getContact, "data-id": contact.contactId}, 
-                contact.lastname, ", ", contact.firstname
-              )
-            )
-          })
-        
-      ) 
+      React.createElement("div", {className: "column is-7"}, 
+        React.createElement("h2", null, contact.firstname, " ", contact.lastname), 
+        React.createElement("div", null, "Phone ", contact.phone), 
+        React.createElement("div", null, "Email ", contact.email), 
+        React.createElement("div", null, "Address ", contact.address)
+      )
+
     )
   }
 }
