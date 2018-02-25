@@ -22441,15 +22441,17 @@ class AddressBook extends React.Component {
       var contacts = JSON.stringify(this.state.contacts);
       var that = this;
       return (
-      React.createElement("div", null, 
-        React.createElement("div", {className: "column is-4"}, 
-          React.createElement("h4", null, "All Contacts"), 
-          React.createElement("input", {type: "text", placeholder: "Search"}), 
+      React.createElement("div", {className: "columns"}, 
+        React.createElement("section", {className: "section column is-4 hero is-fullheight contact-list"}, 
+          React.createElement("h4", {className: "has-text-weight-bold has-text-centered"}, "All Contacts"), 
+          React.createElement("input", {className: "input is-rounded", type: "text", placeholder: "Search"}), 
           
             JSON.parse(contacts).map(function(contact) {
               return (
-                React.createElement("div", {onClick: that.getContact, "data-id": contact.contactId}, 
-                  contact.lastname, ", ", contact.firstname
+                React.createElement("div", {className: "contact"}, 
+                  React.createElement("a", {onClick: that.getContact, "data-id": contact.contactId}, 
+                    contact.lastname, ", ", contact.firstname
+                  )
                 )
               )
             })
@@ -22475,11 +22477,20 @@ class ContactList extends React.Component {
   render() {
     var contact = this.props.contact;
     return (
-      React.createElement("div", {className: "column is-7"}, 
-        React.createElement("h2", null, contact.firstname, " ", contact.lastname), 
-        React.createElement("div", null, "Phone ", contact.phone), 
-        React.createElement("div", null, "Email ", contact.email), 
-        React.createElement("div", null, "Address ", contact.address)
+      React.createElement("section", {className: "section column is-7"}, 
+        React.createElement("h2", {className: "has-text-weight-bold"}, contact.firstname, " ", contact.lastname), 
+        React.createElement("div", {className: "columns"}, 
+          React.createElement("div", {className: "column is-3"}, "Phone"), 
+          React.createElement("div", {className: "column"}, contact.phone)
+        ), 
+        React.createElement("div", {className: "columns"}, 
+          React.createElement("div", {className: "column is-3"}, "Email"), 
+          React.createElement("div", {className: "column"}, contact.email)
+        ), 
+        React.createElement("div", {className: "columns"}, 
+          React.createElement("div", {className: "column is-3"}, "Address"), 
+          React.createElement("div", {className: "column"}, contact.address)
+        )
       )
 
     )

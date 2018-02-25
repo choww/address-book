@@ -9,12 +9,21 @@ class ContactList extends React.Component {
   render() {
     var contact = this.props.contact;
     return (
-      <div className="column is-7">
-        <h2>{contact.firstname} {contact.lastname}</h2>
-        <div>Phone {contact.phone}</div>
-        <div>Email {contact.email}</div>
-        <div>Address {contact.address}</div>
-      </div>
+      <section className="section column is-7">
+        <h2 className="has-text-weight-bold">{contact.firstname} {contact.lastname}</h2>
+        <div className="columns">
+          <div className="column is-3">Phone</div>
+          <div className="column">{contact.phone}</div>
+        </div>
+        <div className="columns">
+          <div className="column is-3">Email</div>
+          <div className="column">{contact.email}</div>
+        </div>
+        <div className="columns">
+          <div className="column is-3">Address</div>
+          <div className="column">{contact.address}</div>
+        </div>
+      </section>
 
     )
   }

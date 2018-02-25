@@ -49,20 +49,22 @@ class AddressBook extends React.Component {
       var contacts = JSON.stringify(this.state.contacts);
       var that = this;
       return (
-      <div>
-        <div className="column is-4">
-          <h4>All Contacts</h4>
-          <input type="text" placeholder="Search"/>
+      <div className="columns">
+        <section className="section column is-4 hero is-fullheight contact-list">
+          <h4 className="has-text-weight-bold has-text-centered">All Contacts</h4>
+          <input className="input is-rounded" type="text" placeholder="Search"/>
           {
             JSON.parse(contacts).map(function(contact) {
               return (
-                <div onClick={that.getContact} data-id={contact.contactId}>
-                  {contact.lastname}, {contact.firstname}
+                <div className="contact">
+                  <a onClick={that.getContact} data-id={contact.contactId}>
+                    {contact.lastname}, {contact.firstname}
+                  </a>
                 </div>
               )
             })
           }
-        </div>
+        </section>
         { this.state.contactLoaded && <ContactList contact={this.state.contact}/> }
       </div>
     )

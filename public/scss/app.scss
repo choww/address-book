@@ -1,0 +1,24 @@
+@import 'bulma';
+
+body,html {
+  margin: 0;
+  padding: 0;
+  background: $background;
+  font-size: $size-5;
+}
+
+h2 { font-size: $size-2; }
+h4 { font-size: $size-4; }
+
+.contact-list { background: $primary; }
+
+.contact { 
+  border-top: 1px solid #888;
+  padding: 1.5rem 0;
+  &:last-child { border-bottom: 1px solid #888; }
+}
+
+.clicked {
+  background: $dark; 
+}
+
