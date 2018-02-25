@@ -9,5 +9,5 @@ gulp.task('reactify', function() {
   }).transform(reactify)
     .bundle()
     .pipe(source('app.js'))
-    .pipe(gulp.dest('public/build'))
+    .pipe(gulp.dest('public/build/js'))
 });
