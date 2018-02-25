@@ -12,7 +12,7 @@ var ContactType = new GraphQLObjectType({
   name: 'Contact',
   fields: function() {
     return {
-    id: { type: GraphQLID },
+    contactId: { type: GraphQLID },
     firstname: { type: GraphQLString },
     lastname: { type: GraphQLString },
     phone: { type: GraphQLString },
@@ -32,6 +32,18 @@ var schema = new GraphQLSchema({
         args: {},
         resolve: function(parent, params) {
           return data.contacts;
+        }
+      },
+      contact: {
+        type: ContactType,
+        args: {
+          contactId: { type: GraphQLID }
+        },
+        resolve: function(parent, params) {
+          var filtered = data.contacts.find(function(contact) {
+            return contact.contactId == params.contactId;
+          });
+          return filtered;
         }
       }
     }

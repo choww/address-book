@@ -22412,7 +22412,7 @@ class AddressBook extends React.Component {
 
   getContacts() {
     var that = this;
-    axios.get('/graphql?query={contacts{firstname,lastname}}')
+    axios.get('/graphql?query={contacts{contactId,firstname,lastname}}')
       .then(function(response) {  
         var data = response.data.data.contacts;
         that.setState({ contacts: data });
@@ -22432,16 +22432,38 @@ ReactDOM.render(React.createElement(AddressBook, null), document.getElementById(
 
 },{"./contact_list.jsx":59,"axios":1,"react":57,"react-dom":54}],59:[function(require,module,exports){
 var React = require('react');
-var ReactDOM = require('react-dom');
+var axios = require('axios');
 
-class ContactList extends React.Component { 
+class ContactList extends React.Component {
+  constructor(props) {
+    super(props);
+    this.getContact = this.getContact.bind(this);
+  } 
+
+  getContact(e) {
+    var id = e.target.getAttribute('data-id');
+    axios.get(`/graphql?query={contact(contactId: ${id}){contactId,firstname,lastname,email}}`)
+         .then(function(response) { 
+           console.log(response.data);
+           return response.data;
+         })
+         .catch(function(error) {
+          console.log(error);
+         });
+  }
+
   render() {
     var contacts = JSON.parse(this.props.contacts);
+    var that = this;
     return (
       React.createElement("div", null, 
         
           contacts.map(function(contact) {
-            return React.createElement("div", null, contact.lastname, ", ", contact.firstname)
+            return (
+              React.createElement("div", {onClick: that.getContact, "data-id": contact.contactId}, 
+                contact.lastname, ", ", contact.firstname
+              )
+            )
           })
         
       ) 
@@ -22451,4 +22473,4 @@ class ContactList extends React.Component {
 
 module.exports = ContactList;
 
-},{"react":57,"react-dom":54}]},{},[58]);
+},{"axios":1,"react":57}]},{},[58]);

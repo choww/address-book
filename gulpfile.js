@@ -11,3 +11,7 @@ gulp.task('reactify', function() {
     .pipe(source('app.js'))
     .pipe(gulp.dest('public/build/js'))
 });
+
+gulp.task('watch', function() {
+  gulp.watch('public/components/*.jsx', ['reactify'])
+});

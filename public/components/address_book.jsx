@@ -20,7 +20,7 @@ class AddressBook extends React.Component {
 
   getContacts() {
     var that = this;
-    axios.get('/graphql?query={contacts{id,firstname,lastname}}')
+    axios.get('/graphql?query={contacts{contactId,firstname,lastname}}')
       .then(function(response) {  
         var data = response.data.data.contacts;
         that.setState({ contacts: data });
