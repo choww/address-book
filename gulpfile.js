@@ -5,7 +5,7 @@ var source = require('vinyl-source-stream');
 
 gulp.task('reactify', function() {
   return browserify({
-    entries: './public/components/contact.jsx',
+    entries: './public/components/address_book.jsx',
   }).transform(reactify)
     .bundle()
     .pipe(source('app.js'))
