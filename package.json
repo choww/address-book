@@ -1,0 +1,35 @@
+{
+  "name": "ch-address-book",
+  "version": "1.0.0",
+  "description": "Edvisor.io take-home test",
+  "main": "server.js",
+  "scripts": {
+    "build": "webpack",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/edvisor-io/ch-address-book.git"
+  },
+  "author": "Carmen",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/edvisor-io/ch-address-book/issues"
+  },
+  "homepage": "https://github.com/edvisor-io/ch-address-book#readme",
+  "dependencies": {
+    "express": "^4.16.2",
+    "express-graphql": "^0.6.12",
+    "graphql": "^0.13.1",
+    "react": "^16.0.0",
+    "react-dom": "^16.0.0"
+  },
+  "devDependencies": {
+    "babel-loader": "^7.1.2",
+    "browserify": "^16.1.0",
+    "gulp": "^3.9.1",
+    "reactify": "^1.1.1",
+    "vinyl-source-stream": "^2.0.0"
+  }
+}
