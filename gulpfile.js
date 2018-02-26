@@ -6,7 +6,7 @@ var sass = require('gulp-sass');
 
 gulp.task('reactify', function() {
   return browserify({
-    entries: 'public/components/index.js',
+    entries: 'public/src/components/index.js',
   }).transform(reactify)
     .bundle()
     .pipe(source('app.js'))
@@ -14,13 +14,12 @@ gulp.task('reactify', function() {
 });
 
 gulp.task('sass', function() {
-  return gulp.src('public/scss/*.scss')
+  return gulp.src('public/src/scss/*.scss')
              .pipe(sass())
              .pipe(gulp.dest('public/build/css'));
 });
 
 gulp.task('watch', function() {
-  gulp.watch('public/components/*.js*', ['reactify']);
-  gulp.watch('public/services/*.js', ['reactify']);
-  gulp.watch('public/scss/*.scss', ['sass']);
+  gulp.watch('public/src/**/*.js*', ['reactify']);
+  gulp.watch('public/src/scss/*.scss', ['sass']);
 });

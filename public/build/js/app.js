@@ -23360,27 +23360,24 @@ module.exports = actions;
 
 },{}],78:[function(require,module,exports){
 var React = require('react');
-var ReactDOM = require('react-dom');
 var actions = require('../actions/contacts');
 var api = require('../services/api');
 
 // child components
 var Contact = require('./contact.jsx');
-// var ContactSearch = require('./contact_search.jsx');
+var ContactList = require('./contact_list.jsx');
+var ContactSearch = require('./contact_search.jsx');
 
 class AddressBook extends React.Component {
   constructor(props) {
     super(props);
-    this.getContact = this.getContact.bind(this);
-    this.handleInputChange = this.handleInputChange.bind(this);
-    this.handleInputSubmission = this.handleInputSubmission.bind(this);
   }
 
   componentWillMount() {
     this.getContacts()
   }
 
-  // data retrieval //
+  // retrieve all contacts //
   getContacts() {
     var that = this;
     api.get('contacts', {}, 'contactId,firstname,lastname')
@@ -23390,68 +23387,25 @@ class AddressBook extends React.Component {
        });
   }
 
-  getContact(e) {
-    var id = e.target.getAttribute('data-id');
-    var that = this;
-    api.get('contact',{contactId: id})
-       .then(function(response) {
-        var data = response.data.data.contact;
-        that.props.store.dispatch(actions.getContact(data));
-       })
-       .catch(function(error) {
-        console.log(error);
-       });
-  }
-
-  // search form //
-  handleInputChange(e) {
-    var searchTerm = e.target.value;
-    this.props.store.dispatch(actions.searchContacts(searchTerm));
-  }
-
-  handleInputSubmission(e) {
-    if (e.key == 'Enter') {
-      var that = this;
-      api.get('contacts', {name: this.props.state.search})
-         .then(function(response) {
-           var data = response.data.data.contacts;
-           that.props.store.dispatch(actions.getContacts(data));
-         });
-    }
-  }
-
   render() {
-      var contacts = this.props.state.contacts;
-      var that = this;
+      var state = this.props.state;
+      var store = this.props.store;
       return (
-      React.createElement("div", {className: "columns"}, 
-        React.createElement("section", {className: "section column is-4 hero is-fullheight contact-list"}, 
-          React.createElement("h4", {className: "has-text-weight-bold has-text-centered"}, "All Contacts"), 
-          React.createElement("input", {className: "input is-rounded", type: "text", placeholder: "Search", 
-                 value: this.props.state.search, 
-                 onKeyPress: this.handleInputSubmission, 
-                 onChange: this.handleInputChange}), 
-          
-            contacts.map(function(contact) {
-              return (
-                React.createElement("div", {className: "contact"}, 
-                  React.createElement("a", {onClick: that.getContact, "data-id": contact.contactId}, 
-                    contact.lastname, ", ", contact.firstname
-                  )
-                )
-              )
-            })
-          
-        ), 
-         this.props.state.contactLoaded && React.createElement(Contact, {contact: this.props.state.contact})
+        React.createElement("div", {className: "columns"}, 
+          React.createElement("section", {className: "section column is-4 hero is-fullheight contact-list"}, 
+            React.createElement("h4", {className: "has-text-weight-bold has-text-centered"}, "All Contacts"), 
+            React.createElement(ContactSearch, {state: state, store: store}), 
+            React.createElement(ContactList, {state: state, store: store})
+          ), 
+           state.contactLoaded && React.createElement(Contact, {contact: state.contact})
+        )
       )
-    )
   }
 }
 
 module.exports = AddressBook;
 
-},{"../actions/contacts":77,"../services/api":82,"./contact.jsx":79,"react":57,"react-dom":54}],79:[function(require,module,exports){
+},{"../actions/contacts":77,"../services/api":84,"./contact.jsx":79,"./contact_list.jsx":80,"./contact_search.jsx":81,"react":57}],79:[function(require,module,exports){
 var React = require('react');
 var axios = require('axios');
 
@@ -23487,6 +23441,94 @@ module.exports = Contact;
 
 },{"axios":1,"react":57}],80:[function(require,module,exports){
 var React = require('react');
+var actions = require('../actions/contacts');
+var api = require('../services/api');
+
+class ContactList extends React.Component {
+  constructor(props) {
+    super(props);
+    this.getContact = this.getContact.bind(this);
+  }
+
+  // retrieve one selected contact
+  getContact(e) {
+    var id = e.target.getAttribute('data-id');
+    var that = this;
+    api.get('contact',{contactId: id})
+       .then(function(response) {
+        var data = response.data.data.contact;
+        that.props.store.dispatch(actions.getContact(data));
+       })
+       .catch(function(error) {
+        console.log(error);
+       });
+  }
+
+  render() {
+    var state = this.props.state;
+    var that = this;
+    return (
+      React.createElement("div", null, 
+        
+          state.contacts.map(function(contact) {
+            return (
+              React.createElement("div", {className: "contact"}, 
+                React.createElement("a", {onClick: that.getContact, "data-id": contact.contactId}, 
+                  contact.lastname, ", ", contact.firstname
+                )
+              )
+            )
+          })
+        
+      )
+    )
+  }
+}
+
+module.exports = ContactList
+
+},{"../actions/contacts":77,"../services/api":84,"react":57}],81:[function(require,module,exports){
+var React = require('react');
+var actions = require('../actions/contacts');
+var api = require('../services/api');
+
+class ContactSearch extends React.Component {
+  constructor(props) {
+    super(props);
+    this.handleInputChange = this.handleInputChange.bind(this);
+    this.handleInputSubmission = this.handleInputSubmission.bind(this);
+  }
+
+  handleInputChange(e) {
+    var searchTerm = e.target.value;
+    this.props.store.dispatch(actions.searchContacts(searchTerm));
+  }
+
+   handleInputSubmission(e) {
+    if (e.key == 'Enter') {
+      var that = this;
+      api.get('contacts', {name: this.props.state.search})
+         .then(function(response) {
+           var data = response.data.data.contacts;
+           that.props.store.dispatch(actions.getContacts(data));
+         });
+    }
+  }
+
+  render() {
+    return (
+      React.createElement("input", {className: "input is-rounded", type: "text", placeholder: "Search", 
+               value: this.props.state.search, 
+               onKeyPress: this.handleInputSubmission, 
+               onChange: this.handleInputChange})
+    )
+  }
+}
+
+module.exports = ContactSearch;
+
+},{"../actions/contacts":77,"../services/api":84,"react":57}],82:[function(require,module,exports){
+var React = require('react');
 var ReactDOM = require('react-dom');
 var redux = require('redux');
 var reducers = require('../reducers/address_book');
@@ -23504,7 +23546,7 @@ const render = function() {
 render();
 store.subscribe(render);
 
-},{"../reducers/address_book":81,"./address_book.jsx":78,"react":57,"react-dom":54,"redux":63}],81:[function(require,module,exports){
+},{"../reducers/address_book":83,"./address_book.jsx":78,"react":57,"react-dom":54,"redux":63}],83:[function(require,module,exports){
 const INITIAL_STATE = {
   contacts: [],
   contact: {},
@@ -23534,7 +23576,7 @@ var addressBook = function(state=INITIAL_STATE, action) {
 
 module.exports = addressBook;
 
-},{}],82:[function(require,module,exports){
+},{}],84:[function(require,module,exports){
 var axios = require('axios');
 
 var api = {
@@ -23566,4 +23608,4 @@ var api = {
 
 module.exports = api;
 
-},{"axios":1}]},{},[80]);
+},{"axios":1}]},{},[82]);
