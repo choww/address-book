@@ -6,7 +6,7 @@ var sass = require('gulp-sass');
 
 gulp.task('reactify', function() {
   return browserify({
-    entries: 'public/components/address_book.jsx',
+    entries: 'public/components/index.js',
   }).transform(reactify)
     .bundle()
     .pipe(source('app.js'))
@@ -20,7 +20,7 @@ gulp.task('sass', function() {
 });
 
 gulp.task('watch', function() {
-  gulp.watch('public/components/*.jsx', ['reactify']);
+  gulp.watch('public/components/*.js*', ['reactify']);
   gulp.watch('public/services/*.js', ['reactify']);
   gulp.watch('public/scss/*.scss', ['sass']);
 });
