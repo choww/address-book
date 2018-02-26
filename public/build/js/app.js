@@ -22395,7 +22395,7 @@ var ReactDOM = require('react-dom');
 var api = require('../services/api');
 
 // child components
-var ContactList = require('./contact_list.jsx');
+var Contact = require('./contact.jsx');
 // var Contact = require('./contact.jsx');
 // var ContactSearch = require('./contact_search.jsx');
 
@@ -22403,9 +22403,12 @@ class AddressBook extends React.Component {
   constructor(props) {
     super(props);
     this.getContact = this.getContact.bind(this);
+    this.handleInputChange = this.handleInputChange.bind(this);
+    this.handleInputSubmission = this.handleInputSubmission.bind(this);
     this.state = {
       contacts: [],
       contact: {},
+      search: '',
       contactLoaded: false
     }
   }
@@ -22414,6 +22417,7 @@ class AddressBook extends React.Component {
     this.getContacts();
   }
 
+  // data retrieval //
   getContacts() {
     var that = this;
     api.get('contacts', {}, 'contactId,firstname,lastname')
@@ -22438,6 +22442,22 @@ class AddressBook extends React.Component {
        });
   }
 
+  // search form //
+  handleInputChange(e) {
+    this.setState({ search: e.target.value });
+  }
+
+  handleInputSubmission(e) {
+    if (e.key == 'Enter') {
+      var that = this;
+      api.get('contacts', {name: this.state.search})
+         .then(function(response) {
+           var data = response.data.data.contacts;
+           that.setState({ contacts: data });
+         });
+    }
+  }
+
   render() {
       var contacts = JSON.stringify(this.state.contacts);
       var that = this;
@@ -22445,7 +22465,10 @@ class AddressBook extends React.Component {
       React.createElement("div", {className: "columns"}, 
         React.createElement("section", {className: "section column is-4 hero is-fullheight contact-list"}, 
           React.createElement("h4", {className: "has-text-weight-bold has-text-centered"}, "All Contacts"), 
-          React.createElement("input", {className: "input is-rounded", type: "text", placeholder: "Search"}), 
+          React.createElement("input", {className: "input is-rounded", type: "text", placeholder: "Search", 
+                 value: this.state.search, 
+                 onKeyPress: this.handleInputSubmission, 
+                 onChange: this.handleInputChange}), 
           
             JSON.parse(contacts).map(function(contact) {
               return (
@@ -22458,7 +22481,7 @@ class AddressBook extends React.Component {
             })
           
         ), 
-         this.state.contactLoaded && React.createElement(ContactList, {contact: this.state.contact})
+         this.state.contactLoaded && React.createElement(Contact, {contact: this.state.contact})
       )
     )
   }
@@ -22466,11 +22489,11 @@ class AddressBook extends React.Component {
 
 ReactDOM.render(React.createElement(AddressBook, null), document.getElementById('container'));
 
-},{"../services/api":60,"./contact_list.jsx":59,"react":57,"react-dom":54}],59:[function(require,module,exports){
+},{"../services/api":60,"./contact.jsx":59,"react":57,"react-dom":54}],59:[function(require,module,exports){
 var React = require('react');
 var axios = require('axios');
 
-class ContactList extends React.Component {
+class Contact extends React.Component {
   constructor(props) {
     super(props);
   }
@@ -22498,7 +22521,7 @@ class ContactList extends React.Component {
   }
 }
 
-module.exports = ContactList;
+module.exports = Contact;
 
 },{"axios":1,"react":57}],60:[function(require,module,exports){
 var axios = require('axios');
@@ -22520,7 +22543,7 @@ var api = {
   paramString: function(params) {
     if (Object.keys(params).length == 0) { return ''; }
     var paramStringArr = Object.keys(params).map(function(key) {
-                           return [key, params[key]].join(':');
+                           return [key, `"${params[key]}"`].join(':');
                         });
     return `(${paramStringArr.join(',')})`;
   },

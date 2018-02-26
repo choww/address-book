@@ -17,7 +17,7 @@ var api = {
   paramString: function(params) {
     if (Object.keys(params).length == 0) { return ''; }
     var paramStringArr = Object.keys(params).map(function(key) {
-                           return [key, params[key]].join(':');
+                           return [key, `"${params[key]}"`].join(':');
                         });
     return `(${paramStringArr.join(',')})`;
   },

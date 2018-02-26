@@ -16,5 +16,7 @@ CH Address Book
 4. Visit http://localhost:4040 in the browser
 
 # Assumptions
-* Users only searches contacts by name
+* User only searches contacts by name
+* User submit search form by hitting the Enter/Return key
+* Search is case-insensitive
 

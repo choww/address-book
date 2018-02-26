@@ -1,7 +1,7 @@
 var React = require('react');
 var axios = require('axios');
 
-class ContactList extends React.Component {
+class Contact extends React.Component {
   constructor(props) {
     super(props);
   }
@@ -29,4 +29,4 @@ class ContactList extends React.Component {
   }
 }
 
-module.exports = ContactList;
+module.exports = Contact;

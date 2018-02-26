@@ -29,9 +29,16 @@ var schema = new GraphQLSchema({
     fields: {
       contacts: {
         type: new GraphQLList(ContactType),
-        args: {},
+        args: {
+          name: { type: GraphQLString }
+        },
         resolve: function(parent, params) {
-          return data.contacts;
+          if (Object.keys(params).length == 0) { return data.contacts; }
+          var filtered = data.contacts.filter(function(contact) {
+            var fullname = [contact.firstname, contact.lastname].join(' ').toLowerCase();
+            return fullname.includes(params.name.toLowerCase());
+          });
+          return filtered;
         }
       },
       contact: {
