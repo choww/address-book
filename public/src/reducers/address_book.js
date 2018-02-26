@@ -5,7 +5,7 @@ const INITIAL_STATE = {
   contactLoaded: false
 };
 
-var addressBook = function(state=INITIAL_STATE, action) {
+var addressBookApp = function(state=INITIAL_STATE, action) {
   switch (action.type) {
     case 'GET_CONTACTS':
       var newState = Object.assign({}, state);
@@ -25,4 +25,4 @@ var addressBook = function(state=INITIAL_STATE, action) {
   }
 }
 
-module.exports = addressBook;
+module.exports = addressBookApp;

@@ -6,7 +6,7 @@ var sass = require('gulp-sass');
 
 gulp.task('reactify', function() {
   return browserify({
-    entries: 'public/src/components/index.js',
+    entries: 'public/src/index.js',
   }).transform(reactify)
     .bundle()
     .pipe(source('app.js'))
