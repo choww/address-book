@@ -23459,7 +23459,6 @@ class Contact extends React.Component {
   }
 
   // actually "saves" the contact
-  // TODO: updates state.contacts
   saveContact() {
     var params = this.props.state.currentlyEditing
     this.props.store.dispatch(actions.saveContact(params));
