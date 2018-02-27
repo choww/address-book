@@ -23326,16 +23326,7 @@ function symbolObservablePonyfill(root) {
 	return result;
 };
 },{}],77:[function(require,module,exports){
-// action types //
-const types = {
-  GET_CONTACT: 'GET_CONTACT',
-  GET_CONTACTS: 'GET_CONTACTS',
-  SEARCH_CONTACTS: 'SEARCH_CONTACTS',
-  EDIT_CONTACT: 'EDIT_CONTACT',
-  EDITING_CONTACT: 'EDITING_CONTACT',
-  SAVE_CONTACT: 'SAVE_CONTACT'
-};
-
+var types = require('./types');
 // actions //
 var actions = {
   getContacts: function(data) {
@@ -23357,9 +23348,9 @@ var actions = {
       search: text
     };
   },
-  editContact: function(contact) {
+  toggleEdit: function(contact) {
     return {
-      type: types.EDIT_CONTACT,
+      type: types.TOGGLE_EDIT,
       currentlyEditing: contact,
       editMode: true
     }
@@ -23383,7 +23374,19 @@ var actions = {
 
 module.exports = actions;
 
-},{}],78:[function(require,module,exports){
+},{"./types":78}],78:[function(require,module,exports){
+const actionTypes = {
+  GET_CONTACT: 'GET_CONTACT',
+  GET_CONTACTS: 'GET_CONTACTS',
+  SEARCH_CONTACTS: 'SEARCH_CONTACTS',
+  TOGGLE_EDIT: 'TOGGLE_EDIT',
+  EDITING_CONTACT: 'EDITING_CONTACT',
+  SAVE_CONTACT: 'SAVE_CONTACT'
+};
+
+module.exports = actionTypes;
+
+},{}],79:[function(require,module,exports){
 var React = require('react');
 var actions = require('../actions/contacts');
 var api = require('../services/api');
@@ -23432,21 +23435,21 @@ class AddressBook extends React.Component {
 
 module.exports = AddressBook;
 
-},{"../actions/contacts":77,"../services/api":84,"./contact.jsx":79,"./contact_list.jsx":80,"./contact_search.jsx":81,"react":57}],79:[function(require,module,exports){
+},{"../actions/contacts":77,"../services/api":85,"./contact.jsx":80,"./contact_list.jsx":81,"./contact_search.jsx":82,"react":57}],80:[function(require,module,exports){
 var React = require('react');
 var actions = require('../actions/contacts');
 
 class Contact extends React.Component {
   constructor(props) {
     super(props);
-    this.editContact = this.editContact.bind(this);
+    this.toggleEdit = this.toggleEdit.bind(this);
     this.editingContact = this.editingContact.bind(this);
     this.saveContact = this.saveContact.bind(this);
   }
 
   // toggle edit mode
-  editContact() {
-    this.props.store.dispatch(actions.editContact(this.props.contact));
+  toggleEdit() {
+    this.props.store.dispatch(actions.toggleEdit(this.props.contact));
   }
 
   // update data as contact info is being edited
@@ -23471,7 +23474,7 @@ class Contact extends React.Component {
       React.createElement("section", {className: "section column is-7"}, 
         React.createElement("div", {className: "field is-grouped is-grouped-right"}, 
           React.createElement("button", {className: "button is-primary", 
-                  onClick: this.editContact}, 
+                  onClick: this.toggleEdit}, 
             "Edit"
           ), 
            state.editMode &&
@@ -23530,7 +23533,7 @@ class Contact extends React.Component {
 
 module.exports = Contact;
 
-},{"../actions/contacts":77,"react":57}],80:[function(require,module,exports){
+},{"../actions/contacts":77,"react":57}],81:[function(require,module,exports){
 var React = require('react');
 var actions = require('../actions/contacts');
 var api = require('../services/api');
@@ -23578,7 +23581,7 @@ class ContactList extends React.Component {
 
 module.exports = ContactList
 
-},{"../actions/contacts":77,"../services/api":84,"react":57}],81:[function(require,module,exports){
+},{"../actions/contacts":77,"../services/api":85,"react":57}],82:[function(require,module,exports){
 var React = require('react');
 var actions = require('../actions/contacts');
 var api = require('../services/api');
@@ -23618,7 +23621,7 @@ class ContactSearch extends React.Component {
 
 module.exports = ContactSearch;
 
-},{"../actions/contacts":77,"../services/api":84,"react":57}],82:[function(require,module,exports){
+},{"../actions/contacts":77,"../services/api":85,"react":57}],83:[function(require,module,exports){
 var React = require('react');
 var ReactDOM = require('react-dom');
 var redux = require('redux');
@@ -23637,47 +23640,43 @@ const render = function() {
 render();
 store.subscribe(render);
 
-},{"./components/address_book.jsx":78,"./reducers/address_book":83,"react":57,"react-dom":54,"redux":63}],83:[function(require,module,exports){
+},{"./components/address_book.jsx":79,"./reducers/address_book":84,"react":57,"react-dom":54,"redux":63}],84:[function(require,module,exports){
+var actionTypes = require('../actions/types');
+
 const INITIAL_STATE = {
   contacts: [],
   contact: {},
   search: '',
   contactLoaded: false,
   editMode: false,
-  currentlyEditing: {
-    firstname: '',
-    lastname: '',
-    phone: '',
-    email: '',
-    address: ''
-  }
+  currentlyEditing: {}
 };
 
 var addressBookApp = function(state=INITIAL_STATE, action) {
   switch (action.type) {
-    case 'GET_CONTACTS':
+    case actionTypes.GET_CONTACTS:
       var newState = Object.assign({}, state);
       newState.contacts = action.contacts;
       return newState;
-    case 'GET_CONTACT':
+    case actionTypes.GET_CONTACT:
       var newState = Object.assign({}, state);
       newState.contactLoaded = action.contactLoaded;
       newState.contact = action.contact;
       return newState;
-    case 'SEARCH_CONTACTS':
+    case actionTypes.SEARCH_CONTACTS:
       var newState = Object.assign({}, state);
       newState.search = action.search;
       return newState;
-    case 'EDIT_CONTACT':
+    case actionTypes.TOGGLE_EDIT:
       var newState = Object.assign({}, state);
       newState.currentlyEditing = action.currentlyEditing;
       newState.editMode = action.editMode;
       return newState;
-    case 'EDITING_CONTACT':
+    case actionTypes.EDITING_CONTACT:
       var newState = Object.assign({}, state);
       newState.currentlyEditing[action.field] = action.value;
       return newState;
-    case 'SAVE_CONTACT':
+    case actionTypes.SAVE_CONTACT:
       var newState = Object.assign({}, state);
       newState.contact = action.contact;
       newState.currentlyEditing = action.currentlyEditing;
@@ -23690,7 +23689,7 @@ var addressBookApp = function(state=INITIAL_STATE, action) {
 
 module.exports = addressBookApp;
 
-},{}],84:[function(require,module,exports){
+},{"../actions/types":78}],85:[function(require,module,exports){
 var axios = require('axios');
 
 var api = {
@@ -23722,4 +23721,4 @@ var api = {
 
 module.exports = api;
 
-},{"axios":1}]},{},[82]);
+},{"axios":1}]},{},[83]);

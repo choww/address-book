@@ -1,13 +1,4 @@
-// action types //
-const types = {
-  GET_CONTACT: 'GET_CONTACT',
-  GET_CONTACTS: 'GET_CONTACTS',
-  SEARCH_CONTACTS: 'SEARCH_CONTACTS',
-  TOGGLE_EDIT: 'TOGGLE_EDIT',
-  EDITING_CONTACT: 'EDITING_CONTACT',
-  SAVE_CONTACT: 'SAVE_CONTACT'
-};
-
+var types = require('./types');
 // actions //
 var actions = {
   getContacts: function(data) {
