@@ -1,23 +1,13 @@
 var React = require('react');
 var Enzyme = require('enzyme');
 var Adapter = require('enzyme-adapter-react-16');
-var reduxMock = require('redux-mock-store');
 var AddressBook = require('../../public/src/components/address_book.jsx');
+var helpers = require('../helpers/setup');
 
 Enzyme.configure({ adapter: new Adapter() });
 
-var mockStore = reduxMock();
-
 function setup() {
-  var initialState = jest.fn(function() {});
-  var store = mockStore({
-    contacts: [],
-    contact: {},
-    search: '',
-    contactLoaded: false,
-    editMode: false,
-    currentlyEditing: {}
-  });
+  var store = helpers.store();
   var state = store.getState();
   var enzymeWrapper = Enzyme.mount(<AddressBook state={state} store={store}/>);
   return {
@@ -31,7 +21,7 @@ describe('Address Book Component', function() {
 
   beforeEach(function() {
     wrapper = setup().enzymeWrapper;
-    contact = {contactId: 1, firstname: 'first', lastname: 'last'};
+    contact = helpers.contact;
   });
 
   // rendering

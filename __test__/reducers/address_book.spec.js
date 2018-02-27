@@ -1,20 +1,14 @@
+var helpers = require('../helpers/setup');
+
 describe("Address Book Reducer", function() {
   var reducer = require('../../public/src/reducers/address_book');
   var actions = require('../../public/src/actions/contacts');
   var contact, contacts, state;
 
   beforeEach(function() {
-    contact = {contactId: 1, firstname: 'first', lastname: 'last'};
-    contacts = [{contactId: 2, firstname: 'first2', lastname: 'test2'},
-                {contactId: 3, firstname: 'first3', lastname: 'test3'}];
-    state = {
-      contacts: [],
-      contact: {},
-      search: '',
-      contactLoaded: false,
-      editMode: false,
-      currentlyEditing: {}
-    };
+    contact = helpers.contact;
+    contacts = helpers.contacts;
+    state = helpers.state;
   });
 
   it('should return the initial state', function() {

@@ -1,12 +1,12 @@
+var helpers = require('../helpers/setup');
+
 describe("Contacts Actions", function() {
   var actions = require('../../public/src/actions/contacts');
   var contact, contacts;
 
   beforeEach(function() {
-    contact = {contactId: 1, firstname: 'first', lastname: 'last'};
-    contacts = [{contactId: 2, firstname: 'first2', lastname: 'test2'},
-                {contactId: 3, firstname: 'first3', lastname: 'test3'}];
-
+    contact = helpers.contact;
+    contacts = helpers.contacts;
   });
 
   it("should create an action for retrieving a contact", function() {
