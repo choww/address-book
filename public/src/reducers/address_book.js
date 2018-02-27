@@ -3,7 +3,7 @@ const INITIAL_STATE = {
   contact: {},
   search: '',
   contactLoaded: false,
-  editDisabled: true,
+  editMode: false,
   currentlyEditing: {
     firstname: '',
     lastname: '',
@@ -31,7 +31,7 @@ var addressBookApp = function(state=INITIAL_STATE, action) {
     case 'EDIT_CONTACT':
       var newState = Object.assign({}, state);
       newState.currentlyEditing = action.currentlyEditing;
-      newState.editDisabled = action.editDisabled;
+      newState.editMode = action.editMode;
       return newState;
     case 'EDITING_CONTACT':
       var newState = Object.assign({}, state);
@@ -41,7 +41,7 @@ var addressBookApp = function(state=INITIAL_STATE, action) {
       var newState = Object.assign({}, state);
       newState.contact = action.contact;
       newState.currentlyEditing = action.currentlyEditing;
-      newState.editDisabled = action.editDisabled;
+      newState.editMode = action.editMode;
       return newState;
     default:
       return state;

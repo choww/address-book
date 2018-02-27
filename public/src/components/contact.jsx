@@ -40,7 +40,7 @@ class Contact extends React.Component {
                   onClick={this.editContact}>
             Edit
           </button>
-          { !state.editDisabled &&
+          { state.editMode &&
             <button className="button is-info"
                     onClick={this.saveContact}>
               Save
@@ -48,50 +48,45 @@ class Contact extends React.Component {
           }
         </div>
         <div className="columns">
-          <div className="column is-3">
-            <input className="input"
-                   onChange={this.editingContact}
-                   name="firstname"
-                   defaultValue={contact.firstname}
-                   disabled={state.editDisabled}/>
-          </div>
-          <div className="column">
-            <input className="input"
-                   onChange={this.editingContact}
-                   name="lastname"
-                   defaultValue={contact.lastname}
-                   disabled={state.editDisabled}/>
-          </div>
+          <h2 className="has-text-weight-bold">
+            <span onChange={this.editingContact}
+                  name="firstname"
+                  contentEditable={state.editMode}>
+              {contact.firstname}
+            </span>
+            &nbsp;
+            <span onChange={this.editingContact}
+                  name="lastname"
+                  contentEditable={state.editMode}>
+              {contact.lastname}
+            </span>
+          </h2>
         </div>
         <div className="columns">
           <div className="column is-3">Phone</div>
-
-          <div className="column">
-            <input className="input"
-                 name="phone"
-                 onChange={this.editingContact}
-                 defaultValue={contact.phone}
-                 disabled={state.editDisabled}/>
+          <div className="column"
+               name="phone"
+               onChange={this.editingContact}
+               contentEditable={state.editMode}>
+            {contact.phone}
           </div>
         </div>
         <div className="columns">
           <div className="column is-3">Email</div>
-          <div className="column">
-            <input className="input"
-                   name="email"
-                   onChange={this.editingContact}
-                   defaultValue={contact.email}
-                   disabled={state.editDisabled}/>
+          <div className="column"
+               name="email"
+               onChange={this.editingContact}
+               contentEditable={state.editMode}>
+            {contact.email}
           </div>
         </div>
         <div className="columns">
           <div className="column is-3">Address</div>
-          <div className="column">
-            <input className="input"
-                 name="address"
-                 onChange={this.editingContact}
-                 defaultValue={contact.address}
-                 disabled={state.editDisabled}/>
+          <div className="column"
+               name="address"
+               onChange={this.editingContact}
+               contentEditable={state.editMode}>
+            {contact.address}
           </div>
         </div>
       </section>

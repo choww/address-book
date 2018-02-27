@@ -23361,7 +23361,7 @@ var actions = {
     return {
       type: types.EDIT_CONTACT,
       currentlyEditing: contact,
-      editDisabled: false
+      editMode: true
     }
   },
   editingContact: function(data) {
@@ -23374,7 +23374,7 @@ var actions = {
   saveContact: function(data) {
     return {
       type: types.SAVE_CONTACT,
-      editDisabled: true,
+      editMode: false,
       currentlyEditing: {}, // resets once contact is saved
       contact: data
     }
@@ -23475,7 +23475,7 @@ class Contact extends React.Component {
                   onClick: this.editContact}, 
             "Edit"
           ), 
-           !state.editDisabled &&
+           state.editMode &&
             React.createElement("button", {className: "button is-info", 
                     onClick: this.saveContact}, 
               "Save"
@@ -23483,50 +23483,45 @@ class Contact extends React.Component {
           
         ), 
         React.createElement("div", {className: "columns"}, 
-          React.createElement("div", {className: "column is-3"}, 
-            React.createElement("input", {className: "input", 
-                   onChange: this.editingContact, 
-                   name: "firstname", 
-                   defaultValue: contact.firstname, 
-                   disabled: state.editDisabled})
-          ), 
-          React.createElement("div", {className: "column"}, 
-            React.createElement("input", {className: "input", 
-                   onChange: this.editingContact, 
-                   name: "lastname", 
-                   defaultValue: contact.lastname, 
-                   disabled: state.editDisabled})
+          React.createElement("h2", {className: "has-text-weight-bold"}, 
+            React.createElement("span", {onChange: this.editingContact, 
+                  name: "firstname", 
+                  contentEditable: state.editMode}, 
+              contact.firstname
+            ), 
+            " ", 
+            React.createElement("span", {onChange: this.editingContact, 
+                  name: "lastname", 
+                  contentEditable: state.editMode}, 
+              contact.lastname
+            )
           )
         ), 
         React.createElement("div", {className: "columns"}, 
           React.createElement("div", {className: "column is-3"}, "Phone"), 
-
-          React.createElement("div", {className: "column"}, 
-            React.createElement("input", {className: "input", 
-                 name: "phone", 
-                 onChange: this.editingContact, 
-                 defaultValue: contact.phone, 
-                 disabled: state.editDisabled})
+          React.createElement("div", {className: "column", 
+               name: "phone", 
+               onChange: this.editingContact, 
+               contentEditable: state.editMode}, 
+            contact.phone
           )
         ), 
         React.createElement("div", {className: "columns"}, 
           React.createElement("div", {className: "column is-3"}, "Email"), 
-          React.createElement("div", {className: "column"}, 
-            React.createElement("input", {className: "input", 
-                   name: "email", 
-                   onChange: this.editingContact, 
-                   defaultValue: contact.email, 
-                   disabled: state.editDisabled})
+          React.createElement("div", {className: "column", 
+               name: "email", 
+               onChange: this.editingContact, 
+               contentEditable: state.editMode}, 
+            contact.email
           )
         ), 
         React.createElement("div", {className: "columns"}, 
           React.createElement("div", {className: "column is-3"}, "Address"), 
-          React.createElement("div", {className: "column"}, 
-            React.createElement("input", {className: "input", 
-                 name: "address", 
-                 onChange: this.editingContact, 
-                 defaultValue: contact.address, 
-                 disabled: state.editDisabled})
+          React.createElement("div", {className: "column", 
+               name: "address", 
+               onChange: this.editingContact, 
+               contentEditable: state.editMode}, 
+            contact.address
           )
         )
       )
@@ -23649,7 +23644,7 @@ const INITIAL_STATE = {
   contact: {},
   search: '',
   contactLoaded: false,
-  editDisabled: true,
+  editMode: false,
   currentlyEditing: {
     firstname: '',
     lastname: '',
@@ -23677,7 +23672,7 @@ var addressBookApp = function(state=INITIAL_STATE, action) {
     case 'EDIT_CONTACT':
       var newState = Object.assign({}, state);
       newState.currentlyEditing = action.currentlyEditing;
-      newState.editDisabled = action.editDisabled;
+      newState.editMode = action.editMode;
       return newState;
     case 'EDITING_CONTACT':
       var newState = Object.assign({}, state);
@@ -23687,7 +23682,7 @@ var addressBookApp = function(state=INITIAL_STATE, action) {
       var newState = Object.assign({}, state);
       newState.contact = action.contact;
       newState.currentlyEditing = action.currentlyEditing;
-      newState.editDisabled = action.editDisabled;
+      newState.editMode = action.editMode;
       return newState;
     default:
       return state;

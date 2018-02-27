@@ -33,7 +33,7 @@ var actions = {
     return {
       type: types.EDIT_CONTACT,
       currentlyEditing: contact,
-      editDisabled: false
+      editMode: true
     }
   },
   editingContact: function(data) {
@@ -46,7 +46,7 @@ var actions = {
   saveContact: function(data) {
     return {
       type: types.SAVE_CONTACT,
-      editDisabled: true,
+      editMode: false,
       currentlyEditing: {}, // resets once contact is saved
       contact: data
     }
