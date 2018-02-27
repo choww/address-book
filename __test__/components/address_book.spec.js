@@ -6,22 +6,13 @@ var helpers = require('../helpers/setup');
 
 Enzyme.configure({ adapter: new Adapter() });
 
-function setup() {
-  var store = helpers.store();
-  var state = store.getState();
-  var enzymeWrapper = Enzyme.mount(<AddressBook state={state} store={store}/>);
-  return {
-    store,
-    enzymeWrapper
-  };
-}
-
 describe('Address Book Component', function() {
-  var wrapper, contact;
+  var wrapper;
 
   beforeEach(function() {
-    wrapper = setup().enzymeWrapper;
-    contact = helpers.contact;
+    var store = helpers.store();
+    wrapper = Enzyme.mount(<AddressBook state={store.getState()}
+                                        store={store}/>);
   });
 
   // rendering

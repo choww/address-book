@@ -8,7 +8,7 @@ describe("Address Book Reducer", function() {
   beforeEach(function() {
     contact = helpers.contact;
     contacts = helpers.contacts;
-    state = helpers.state;
+    state = helpers.state();
   });
 
   it('should return the initial state', function() {
