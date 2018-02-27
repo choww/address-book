@@ -15,8 +15,9 @@ CH Address Book
 3. Start the server: `node server.js` 
 4. Visit http://localhost:4040 in the browser
 
-# Assumptions
+# Assumptions & Notes 
 * User only searches contacts by name
 * User submit search form by hitting the Enter/Return key
 * Search is case-insensitive
+* In a real scenario, would likely want to link to real database, so edited contact information is not saved in the Redux store, and selecting a contact from the contact list queries the GraphQL schema.
 
