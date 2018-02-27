@@ -26,7 +26,7 @@ class ContactList extends React.Component {
     var state = this.props.state;
     var that = this;
     return (
-      <div>
+      <div className="contacts">
         {
           state.contacts.map(function(contact) {
             return (
