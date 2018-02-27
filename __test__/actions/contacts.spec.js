@@ -1,5 +1,6 @@
 describe("Contacts Actions", function() {
   var actions = require('../../public/src/actions/contacts');
+  var contact, contacts;
 
   beforeEach(function() {
     contact = {contactId: 1, firstname: 'first', lastname: 'last'};

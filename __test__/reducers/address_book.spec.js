@@ -1,6 +1,7 @@
 describe("Address Book Reducer", function() {
   var reducer = require('../../public/src/reducers/address_book');
   var actions = require('../../public/src/actions/contacts');
+  var contact, contacts, state;
 
   beforeEach(function() {
     contact = {contactId: 1, firstname: 'first', lastname: 'last'};

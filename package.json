@@ -4,8 +4,8 @@
   "description": "Edvisor.io take-home test",
   "main": "server.js",
   "scripts": {
-    "build": "webpack",
-    "test": "jasmine",
+    "test": "jest",
+    "build": "gulp sass && gulp reactify",
     "start": "node server.js"
   },
   "repository": {
@@ -30,12 +30,20 @@
     "redux": "^3.7.2"
   },
   "devDependencies": {
+    "@babel/core": "^7.0.0-beta.40",
+    "babel-core": "^6.26.0",
+    "babel-jest": "^22.4.1",
     "babel-loader": "^7.1.2",
+    "babel-preset-env": "^1.6.1",
+    "babel-preset-react-app": "^3.1.1",
     "browserify": "^16.1.0",
+    "enzyme": "^3.3.0",
+    "enzyme-adapter-react-16": "^1.1.1",
     "gulp": "^3.9.1",
     "gulp-sass": "^3.1.0",
-    "jasmine": "^3.0.0",
+    "jest": "^22.4.2",
     "reactify": "^1.1.1",
+    "redux-mock-store": "^1.5.1",
     "vinyl-source-stream": "^2.0.0"
   }
 }
