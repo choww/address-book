@@ -15,6 +15,9 @@ CH Address Book
 3. Start the server: `node server.js` 
 4. Visit http://localhost:4040 in the browser
 
+# Running Tests
+1. In the root directory of this project, run `npm test`
+
 # Assumptions & Notes 
 * User only searches contacts by name
 * User submit search form by hitting the Enter/Return key

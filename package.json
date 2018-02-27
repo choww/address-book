@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "build": "webpack",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jasmine",
     "start": "node server.js"
   },
   "repository": {
@@ -34,6 +34,7 @@
     "browserify": "^16.1.0",
     "gulp": "^3.9.1",
     "gulp-sass": "^3.1.0",
+    "jasmine": "^3.0.0",
     "reactify": "^1.1.1",
     "vinyl-source-stream": "^2.0.0"
   }

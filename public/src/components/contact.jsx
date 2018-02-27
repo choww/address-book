@@ -4,14 +4,14 @@ var actions = require('../actions/contacts');
 class Contact extends React.Component {
   constructor(props) {
     super(props);
-    this.editContact = this.editContact.bind(this);
+    this.toggleEdit = this.toggleEdit.bind(this);
     this.editingContact = this.editingContact.bind(this);
     this.saveContact = this.saveContact.bind(this);
   }
 
   // toggle edit mode
-  editContact() {
-    this.props.store.dispatch(actions.editContact(this.props.contact));
+  toggleEdit() {
+    this.props.store.dispatch(actions.toggleEdit(this.props.contact));
   }
 
   // update data as contact info is being edited
@@ -36,7 +36,7 @@ class Contact extends React.Component {
       <section className="section column is-7">
         <div className="field is-grouped is-grouped-right">
           <button className="button is-primary"
-                  onClick={this.editContact}>
+                  onClick={this.toggleEdit}>
             Edit
           </button>
           { state.editMode &&

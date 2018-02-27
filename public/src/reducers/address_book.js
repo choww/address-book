@@ -4,13 +4,7 @@ const INITIAL_STATE = {
   search: '',
   contactLoaded: false,
   editMode: false,
-  currentlyEditing: {
-    firstname: '',
-    lastname: '',
-    phone: '',
-    email: '',
-    address: ''
-  }
+  currentlyEditing: {}
 };
 
 var addressBookApp = function(state=INITIAL_STATE, action) {
@@ -28,7 +22,7 @@ var addressBookApp = function(state=INITIAL_STATE, action) {
       var newState = Object.assign({}, state);
       newState.search = action.search;
       return newState;
-    case 'EDIT_CONTACT':
+    case 'TOGGLE_EDIT':
       var newState = Object.assign({}, state);
       newState.currentlyEditing = action.currentlyEditing;
       newState.editMode = action.editMode;

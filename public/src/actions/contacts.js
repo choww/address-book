@@ -3,7 +3,7 @@ const types = {
   GET_CONTACT: 'GET_CONTACT',
   GET_CONTACTS: 'GET_CONTACTS',
   SEARCH_CONTACTS: 'SEARCH_CONTACTS',
-  EDIT_CONTACT: 'EDIT_CONTACT',
+  TOGGLE_EDIT: 'TOGGLE_EDIT',
   EDITING_CONTACT: 'EDITING_CONTACT',
   SAVE_CONTACT: 'SAVE_CONTACT'
 };
@@ -29,9 +29,9 @@ var actions = {
       search: text
     };
   },
-  editContact: function(contact) {
+  toggleEdit: function(contact) {
     return {
-      type: types.EDIT_CONTACT,
+      type: types.TOGGLE_EDIT,
       currentlyEditing: contact,
       editMode: true
     }
