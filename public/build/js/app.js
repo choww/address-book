@@ -23399,6 +23399,29 @@ var ContactSearch = require('./contact_search.jsx');
 class AddressBook extends React.Component {
   constructor(props) {
     super(props);
+    this.getContacts = this.getContacts.bind(this);
+    this.getContact = this.getContact.bind(this);
+  }
+
+  // retrieve all contacts //
+  getContacts() {
+    var that = this;
+    api.get('contacts', {}, 'contactId,firstname,lastname')
+       .then(function(response) {
+         var data = response.data.data.contacts;
+         that.props.store.dispatch(actions.getContacts(data));
+       });
+  }
+
+  // retrieve one contact by ID
+  getContact(e) {
+    var id = e.target.getAttribute('data-id');
+    var that = this;
+    api.get('contact', {contactId: id})
+       .then(function(response) {
+        var data = response.data.data.contact;
+        that.props.store.dispatch(actions.getContact(data));
+       });
   }
 
   render() {
@@ -23407,9 +23430,9 @@ class AddressBook extends React.Component {
       return (
         React.createElement("div", {className: "columns"}, 
           React.createElement("section", {className: "section column is-4 hero is-fullheight contact-list"}, 
-            React.createElement("h4", {className: "has-text-weight-bold has-text-centered"}, "All Contacts"), 
+            React.createElement("h4", null, "All Contacts"), 
             React.createElement(ContactSearch, {state: state, store: store}), 
-            React.createElement(ContactList, {state: state, store: store})
+            React.createElement(ContactList, {state: state, store: store, getContact: this.getContact, getContacts: this.getContacts})
           ), 
            state.contactLoaded &&
             React.createElement(Contact, {contact: state.contact, store: store, state: state})
@@ -23521,41 +23544,14 @@ module.exports = Contact;
 
 },{"../actions/contacts":77,"react":57}],81:[function(require,module,exports){
 var React = require('react');
-var actions = require('../actions/contacts');
-var api = require('../services/api');
 
 class ContactList extends React.Component {
   constructor(props) {
     super(props);
-    this.getContact = this.getContact.bind(this);
   }
 
   componentWillMount() {
-    this.getContacts()
-  }
-
-  // retrieve all contacts //
-  getContacts() {
-    var that = this;
-    api.get('contacts', {}, 'contactId,firstname,lastname')
-       .then(function(response) {
-         var data = response.data.data.contacts;
-         that.props.store.dispatch(actions.getContacts(data));
-       });
-  }
-
-  // retrieve one selected contact
-  getContact(e) {
-    var id = e.target.getAttribute('data-id');
-    var that = this;
-    api.get('contact',{contactId: id})
-       .then(function(response) {
-        var data = response.data.data.contact;
-        that.props.store.dispatch(actions.getContact(data));
-       })
-       .catch(function(error) {
-        console.log(error);
-       });
+    this.props.getContacts()
   }
 
   render() {
@@ -23566,8 +23562,8 @@ class ContactList extends React.Component {
         
           state.contacts.map(function(contact) {
             return (
-              React.createElement("div", {className: "contact"}, 
-                React.createElement("a", {onClick: that.getContact, "data-id": contact.contactId}, 
+              React.createElement("div", {className: "contact", key: contact.contactId}, 
+                React.createElement("a", {onClick: that.props.getContact, "data-id": contact.contactId}, 
                   contact.lastname, ", ", contact.firstname
                 )
               )
@@ -23579,9 +23575,9 @@ class ContactList extends React.Component {
   }
 }
 
-module.exports = ContactList
+module.exports = ContactList;
 
-},{"../actions/contacts":77,"../services/api":85,"react":57}],82:[function(require,module,exports){
+},{"react":57}],82:[function(require,module,exports){
 var React = require('react');
 var actions = require('../actions/contacts');
 var api = require('../services/api');

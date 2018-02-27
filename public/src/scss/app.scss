@@ -8,7 +8,11 @@ body,html {
 }
 
 h2 { font-size: $size-2; }
-h4 { font-size: $size-4; }
+h4 { 
+  font-size: $size-4; 
+  text-align: center;
+  font-weight: bold;
+}
 
 .contact-list { background: $primary; }
 
