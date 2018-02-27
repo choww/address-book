@@ -8,6 +8,20 @@ class ContactList extends React.Component {
     this.getContact = this.getContact.bind(this);
   }
 
+  componentWillMount() {
+    this.getContacts()
+  }
+
+  // retrieve all contacts //
+  getContacts() {
+    var that = this;
+    api.get('contacts', {}, 'contactId,firstname,lastname')
+       .then(function(response) {
+         var data = response.data.data.contacts;
+         that.props.store.dispatch(actions.getContacts(data));
+       });
+  }
+
   // retrieve one selected contact
   getContact(e) {
     var id = e.target.getAttribute('data-id');

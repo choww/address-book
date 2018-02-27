@@ -12,20 +12,6 @@ class AddressBook extends React.Component {
     super(props);
   }
 
-  componentWillMount() {
-    this.getContacts()
-  }
-
-  // retrieve all contacts //
-  getContacts() {
-    var that = this;
-    api.get('contacts', {}, 'contactId,firstname,lastname')
-       .then(function(response) {
-         var data = response.data.data.contacts;
-         that.props.store.dispatch(actions.getContacts(data));
-       });
-  }
-
   render() {
       var state = this.props.state;
       var store = this.props.store;
