@@ -13,12 +13,13 @@ h4 { font-size: $size-4; }
 .contact-list { background: $primary; }
 
 .contact { 
-  border-top: 1px solid #888;
+  border-top: 1px solid $dark-grey;
   padding: 1.5rem 0;
-  &:last-child { border-bottom: 1px solid #888; }
+  &:last-child { border-bottom: 1px solid $dark-grey; }
 }
+
+button.button.is-primary { color: $dark-grey; }
 
 .clicked {
   background: $dark; 
 }
-

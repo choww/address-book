@@ -2,6 +2,11 @@ $primary: #CBCBCB;
 $link: #5B5B5B;
 $background: #EDEDED;
 $dark: #BABABA;
+$dark-grey: #888;
 
 $section-padding: 3rem;
-@import '../../node_modules/bulma/bulma.sass';
+
+$input-shadow: none;
+
+@import '../../../node_modules/bulma/bulma.sass';
+

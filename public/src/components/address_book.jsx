@@ -36,7 +36,9 @@ class AddressBook extends React.Component {
             <ContactSearch state={state} store={store}/>
             <ContactList state={state} store={store}/>
           </section>
-          { state.contactLoaded && <Contact contact={state.contact}/> }
+          { state.contactLoaded &&
+            <Contact contact={state.contact} store={store} state={state}/>
+          }
         </div>
       )
   }

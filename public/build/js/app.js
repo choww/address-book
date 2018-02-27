@@ -23328,9 +23328,12 @@ function symbolObservablePonyfill(root) {
 },{}],77:[function(require,module,exports){
 // action types //
 const types = {
-  GET_ONE_CONTACT: 'GET_ONE_CONTACT',
+  GET_CONTACT: 'GET_CONTACT',
   GET_CONTACTS: 'GET_CONTACTS',
-  SEARCH_CONTACTS: 'SEARCH_CONTACTS'
+  SEARCH_CONTACTS: 'SEARCH_CONTACTS',
+  EDIT_CONTACT: 'EDIT_CONTACT',
+  EDITING_CONTACT: 'EDITING_CONTACT',
+  SAVE_CONTACT: 'SAVE_CONTACT'
 };
 
 // actions //
@@ -23343,7 +23346,7 @@ var actions = {
   },
   getContact: function(data) {
     return {
-      type: types.GET_ONE_CONTACT,
+      type: types.GET_CONTACT,
       contact: data,
       contactLoaded: true
     };
@@ -23353,6 +23356,28 @@ var actions = {
       type: types.SEARCH_CONTACTS,
       search: text
     };
+  },
+  editContact: function(contact) {
+    return {
+      type: types.EDIT_CONTACT,
+      currentlyEditing: contact,
+      editDisabled: false
+    }
+  },
+  editingContact: function(data) {
+    return {
+      type: types.EDITING_CONTACT,
+      field: data.field,
+      value: data.value
+    }
+  },
+  saveContact: function(data) {
+    return {
+      type: types.SAVE_CONTACT,
+      editDisabled: true,
+      currentlyEditing: {}, // resets once contact is saved
+      contact: data
+    }
   }
 };
 
@@ -23397,7 +23422,9 @@ class AddressBook extends React.Component {
             React.createElement(ContactSearch, {state: state, store: store}), 
             React.createElement(ContactList, {state: state, store: store})
           ), 
-           state.contactLoaded && React.createElement(Contact, {contact: state.contact})
+           state.contactLoaded &&
+            React.createElement(Contact, {contact: state.contact, store: store, state: state})
+          
         )
       )
   }
@@ -23407,39 +23434,109 @@ module.exports = AddressBook;
 
 },{"../actions/contacts":77,"../services/api":84,"./contact.jsx":79,"./contact_list.jsx":80,"./contact_search.jsx":81,"react":57}],79:[function(require,module,exports){
 var React = require('react');
-var axios = require('axios');
+var actions = require('../actions/contacts');
 
 class Contact extends React.Component {
   constructor(props) {
     super(props);
+    this.editContact = this.editContact.bind(this);
+    this.editingContact = this.editingContact.bind(this);
+    this.saveContact = this.saveContact.bind(this);
+  }
+
+  // toggle edit mode
+  editContact() {
+    this.props.store.dispatch(actions.editContact(this.props.contact));
+  }
+
+  // update data as contact info is being edited
+  editingContact(e) {
+    var params = {
+      field: e.target.getAttribute('name'),
+      value: e.target.value
+    };
+    this.props.store.dispatch(actions.editingContact(params));
+  }
+
+  // actually "saves" the contact
+  // TODO: updates state.contacts
+  saveContact() {
+    var params = this.props.state.currentlyEditing
+    this.props.store.dispatch(actions.saveContact(params));
   }
 
   render() {
     var contact = this.props.contact;
+    var state = this.props.state;
     return (
       React.createElement("section", {className: "section column is-7"}, 
-        React.createElement("h2", {className: "has-text-weight-bold"}, contact.firstname, " ", contact.lastname), 
+        React.createElement("div", {className: "field is-grouped is-grouped-right"}, 
+          React.createElement("button", {className: "button is-primary", 
+                  onClick: this.editContact}, 
+            "Edit"
+          ), 
+           !state.editDisabled &&
+            React.createElement("button", {className: "button is-info", 
+                    onClick: this.saveContact}, 
+              "Save"
+            )
+          
+        ), 
+        React.createElement("div", {className: "columns"}, 
+          React.createElement("div", {className: "column is-3"}, 
+            React.createElement("input", {className: "input", 
+                   onChange: this.editingContact, 
+                   name: "firstname", 
+                   defaultValue: contact.firstname, 
+                   disabled: state.editDisabled})
+          ), 
+          React.createElement("div", {className: "column"}, 
+            React.createElement("input", {className: "input", 
+                   onChange: this.editingContact, 
+                   name: "lastname", 
+                   defaultValue: contact.lastname, 
+                   disabled: state.editDisabled})
+          )
+        ), 
         React.createElement("div", {className: "columns"}, 
           React.createElement("div", {className: "column is-3"}, "Phone"), 
-          React.createElement("div", {className: "column"}, contact.phone)
+
+          React.createElement("div", {className: "column"}, 
+            React.createElement("input", {className: "input", 
+                 name: "phone", 
+                 onChange: this.editingContact, 
+                 defaultValue: contact.phone, 
+                 disabled: state.editDisabled})
+          )
         ), 
         React.createElement("div", {className: "columns"}, 
           React.createElement("div", {className: "column is-3"}, "Email"), 
-          React.createElement("div", {className: "column"}, contact.email)
+          React.createElement("div", {className: "column"}, 
+            React.createElement("input", {className: "input", 
+                   name: "email", 
+                   onChange: this.editingContact, 
+                   defaultValue: contact.email, 
+                   disabled: state.editDisabled})
+          )
         ), 
         React.createElement("div", {className: "columns"}, 
           React.createElement("div", {className: "column is-3"}, "Address"), 
-          React.createElement("div", {className: "column"}, contact.address)
+          React.createElement("div", {className: "column"}, 
+            React.createElement("input", {className: "input", 
+                 name: "address", 
+                 onChange: this.editingContact, 
+                 defaultValue: contact.address, 
+                 disabled: state.editDisabled})
+          )
         )
       )
-
     )
   }
 }
 
 module.exports = Contact;
 
-},{"axios":1,"react":57}],80:[function(require,module,exports){
+},{"../actions/contacts":77,"react":57}],80:[function(require,module,exports){
 var React = require('react');
 var actions = require('../actions/contacts');
 var api = require('../services/api');
@@ -23551,7 +23648,15 @@ const INITIAL_STATE = {
   contacts: [],
   contact: {},
   search: '',
-  contactLoaded: false
+  contactLoaded: false,
+  editDisabled: true,
+  currentlyEditing: {
+    firstname: '',
+    lastname: '',
+    phone: '',
+    email: '',
+    address: ''
+  }
 };
 
 var addressBookApp = function(state=INITIAL_STATE, action) {
@@ -23560,7 +23665,7 @@ var addressBookApp = function(state=INITIAL_STATE, action) {
       var newState = Object.assign({}, state);
       newState.contacts = action.contacts;
       return newState;
-    case 'GET_ONE_CONTACT':
+    case 'GET_CONTACT':
       var newState = Object.assign({}, state);
       newState.contactLoaded = action.contactLoaded;
       newState.contact = action.contact;
@@ -23568,6 +23673,21 @@ var addressBookApp = function(state=INITIAL_STATE, action) {
     case 'SEARCH_CONTACTS':
       var newState = Object.assign({}, state);
       newState.search = action.search;
+      return newState;
+    case 'EDIT_CONTACT':
+      var newState = Object.assign({}, state);
+      newState.currentlyEditing = action.currentlyEditing;
+      newState.editDisabled = action.editDisabled;
+      return newState;
+    case 'EDITING_CONTACT':
+      var newState = Object.assign({}, state);
+      newState.currentlyEditing[action.field] = action.value;
+      return newState;
+    case 'SAVE_CONTACT':
+      var newState = Object.assign({}, state);
+      newState.contact = action.contact;
+      newState.currentlyEditing = action.currentlyEditing;
+      newState.editDisabled = action.editDisabled;
       return newState;
     default:
       return state;
