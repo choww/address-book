@@ -9,6 +9,7 @@ Enzyme.configure({ adapter: new Adapter() });
 var mockStore = reduxMock();
 
 function setup() {
+  var initialState = jest.fn(function() {});
   var store = mockStore({
     contacts: [],
     contact: {},
@@ -25,20 +26,23 @@ function setup() {
   };
 }
 
-var wrapper;
-
 describe('Address Book Component', function() {
+  var wrapper, contact;
+
   beforeEach(function() {
     wrapper = setup().enzymeWrapper;
+    contact = {contactId: 1, firstname: 'first', lastname: 'last'};
   });
 
   // rendering
   it('should render self', function() {
-    expect(wrapper.find('section').hasClass('contact-list')).toBe(true);
+    var sample = wrapper.find('section').hasClass('contact-list');
+    expect(sample).toBe(true);
   });
 
   it('should render the ContactSearch component', function() {
-    expect(wrapper.find('input').props()).toHaveProperty('placeholder', 'Search');
+    var sample = wrapper.find('input').props();
+    expect(sample).toHaveProperty('placeholder', 'Search');
   });
 
   it('should render the ContactList component', function() {
@@ -48,7 +52,5 @@ describe('Address Book Component', function() {
   it('should not render the Contact component by default', function() {
     expect(wrapper.find('span')).toBeUndefined;
   });
-
-  // action dispatching
 });
 
