@@ -36,11 +36,13 @@ class Contact extends React.Component {
       <section className="section column is-7">
         <div className="field is-grouped is-grouped-right">
           <button className="button is-primary"
+                  name="edit"
                   onClick={this.toggleEdit}>
             Edit
           </button>
           { state.editMode &&
             <button className="button is-info"
+                    name="save"
                     onClick={this.saveContact}>
               Save
             </button>

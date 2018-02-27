@@ -43,4 +43,7 @@ describe('Contact List Component', function() {
     wrapper.find('a').first().simulate('click');
     expect(wrapper.props().getContact.mock.calls.length).toBe(1);
   });
+
+  xit('should show a different contact when the user clicks on a different contact than the previous one', function() {
+  });
 });
