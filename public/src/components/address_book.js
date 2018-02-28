@@ -3,9 +3,9 @@ var actions = require('../actions/contacts');
 var api = require('../services/api');
 
 // child components
-var Contact = require('./contact.jsx');
-var ContactList = require('./contact_list.jsx');
-var ContactSearch = require('./contact_search.jsx');
+var Contact = require('./contact');
+var ContactList = require('./contact_list');
+var ContactSearch = require('./contact_search');
 
 class AddressBook extends React.Component {
   constructor(props) {

@@ -20,6 +20,6 @@ gulp.task('sass', function() {
 });
 
 gulp.task('watch', function() {
-  gulp.watch('public/src/**/*.js*', ['reactify']);
+  gulp.watch('public/src/**/*.js', ['reactify']);
   gulp.watch('public/src/scss/*.scss', ['sass']);
 });

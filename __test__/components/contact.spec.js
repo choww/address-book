@@ -1,9 +1,8 @@
 var React = require('react');
 var Enzyme = require('enzyme');
 var Adapter = require('enzyme-adapter-react-16');
-var Contact = require('../../public/src/components/contact.jsx');
+var Contact = require('../../public/src/components/contact');
 var helpers = require('../helpers/setup');
-var ReactTestRenderer = require('react-test-renderer');
 
 Enzyme.configure({ adapter: new Adapter() });
 

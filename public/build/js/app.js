@@ -23392,9 +23392,9 @@ var actions = require('../actions/contacts');
 var api = require('../services/api');
 
 // child components
-var Contact = require('./contact.jsx');
-var ContactList = require('./contact_list.jsx');
-var ContactSearch = require('./contact_search.jsx');
+var Contact = require('./contact');
+var ContactList = require('./contact_list');
+var ContactSearch = require('./contact_search');
 
 class AddressBook extends React.Component {
   constructor(props) {
@@ -23475,7 +23475,7 @@ class AddressBook extends React.Component {
 
 module.exports = AddressBook;
 
-},{"../actions/contacts":77,"../services/api":85,"./contact.jsx":80,"./contact_list.jsx":81,"./contact_search.jsx":82,"react":57}],80:[function(require,module,exports){
+},{"../actions/contacts":77,"../services/api":85,"./contact":80,"./contact_list":81,"./contact_search":82,"react":57}],80:[function(require,module,exports){
 var React = require('react');
 
 class Contact extends React.Component {
@@ -23631,7 +23631,7 @@ var React = require('react');
 var ReactDOM = require('react-dom');
 var redux = require('redux');
 var addressBookApp = require('./reducers/address_book');
-var AddressBook = require('./components/address_book.jsx');
+var AddressBook = require('./components/address_book');
 
 const store = redux.createStore(addressBookApp);
 
@@ -23645,7 +23645,7 @@ const render = function() {
 render();
 store.subscribe(render);
 
-},{"./components/address_book.jsx":79,"./reducers/address_book":84,"react":57,"react-dom":54,"redux":63}],84:[function(require,module,exports){
+},{"./components/address_book":79,"./reducers/address_book":84,"react":57,"react-dom":54,"redux":63}],84:[function(require,module,exports){
 var actionTypes = require('../actions/types');
 
 const INITIAL_STATE = {

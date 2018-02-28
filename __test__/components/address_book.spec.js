@@ -1,7 +1,7 @@
 var React = require('react');
 var Enzyme = require('enzyme');
 var Adapter = require('enzyme-adapter-react-16');
-var AddressBook = require('../../public/src/components/address_book.jsx');
+var AddressBook = require('../../public/src/components/address_book');
 var helpers = require('../helpers/setup');
 
 Enzyme.configure({ adapter: new Adapter() });

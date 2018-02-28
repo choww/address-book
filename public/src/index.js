@@ -2,7 +2,7 @@ var React = require('react');
 var ReactDOM = require('react-dom');
 var redux = require('redux');
 var addressBookApp = require('./reducers/address_book');
-var AddressBook = require('./components/address_book.jsx');
+var AddressBook = require('./components/address_book');
 
 const store = redux.createStore(addressBookApp);
 
