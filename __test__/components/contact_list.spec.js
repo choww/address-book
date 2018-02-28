@@ -24,24 +24,29 @@ describe('Contact List Component', function() {
   });
 
   it('should call the getContacts event handler when component is mounted', function() {
-    expect(wrapper.props().getContacts.mock.calls.length).toBe(1);
+    var method = wrapper.props().getContacts;
+    expect(method).toBeCalled();
   });
 
   it('should render a list of contacts when component is mounted', function() {
-    expect(wrapper.find('a')).toHaveLength(contacts.length);
+    var element = wrapper.find('a');
+    expect(element).toHaveLength(contacts.length);
   });
 
   it('should render the contact names when component is mounted', function() {
     var num = 0;
     wrapper.find('a').forEach(function(node) {
       var contact = contacts[num];
-      expect(node.text()).toEqual(`${contact.lastname}, ${contact.firstname}`);
+      var sample = node.text();
+      var expected = `${contact.lastname}, ${contact.firstname}`
+      expect(sample).toEqual(expected);
       num++;
     });
   });
 
   it('should call the getContact event handler when user clicks on a contact', function() {
     wrapper.find('a').first().simulate('click');
-    expect(wrapper.props().getContact.mock.calls.length).toBe(1);
+    var method = wrapper.props().getContact;
+    expect(method).toBeCalled();
   });
 });

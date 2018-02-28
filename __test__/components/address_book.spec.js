@@ -27,11 +27,13 @@ describe('Address Book Component', function() {
   });
 
   it('should render the ContactList component', function() {
-    expect(wrapper.find('.contacts')).toBeDefined;
+    var element = wrapper.find('.contacts');
+    expect().toBeDefined;
   });
 
   it('should not render the Contact component by default', function() {
-    expect(wrapper.find('h2')).toHaveLength(0);
+    var element = wrapper.find('.contact-name');
+    expect(element).toHaveLength(0);
   });
 });
 

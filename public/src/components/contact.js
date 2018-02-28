@@ -25,24 +25,25 @@ class Contact extends React.Component {
             </button>
           }
         </div>
-        <div className="columns">
-          <h2 className="has-text-weight-bold">
-            <div onChange={this.props.editingContact}
-                  name="firstname"
-                  contentEditable={state.editMode}>
-              {contact.firstname}
-            </div>
-            &nbsp;
-            <div onChange={this.props.editingContact}
-                  name="lastname"
-                  contentEditable={state.editMode}>
-              {contact.lastname}
-            </div>
-          </h2>
+        <div className="contact-name columns">
+          <div className="column is-3"
+               onChange={this.props.editingContact}
+               name="firstname"
+               contentEditable={state.editMode}>
+            {contact.firstname}
+          </div>
+          &nbsp;
+          <div className="column is-3"
+               onChange={this.props.editingContact}
+               name="lastname"
+               contentEditable={state.editMode}>
+            {contact.lastname}
+          </div>
         </div>
         <div className="columns">
           <div className="column is-3">Phone</div>
-          <div onChange={this.props.editingContact}
+          <div className="column"
+               onChange={this.props.editingContact}
                name="phone"
                contentEditable={state.editMode}>
             {contact.phone}
