@@ -30,12 +30,6 @@ describe("Address Book Reducer", function() {
     expect(sample).toEqual(expected);
   });
 
-  it('should handle SEARCH_CONTACTS', function() {
-    var action = actions.searchContacts('word');
-    var sample = reducer(state, action).search;
-    expect(sample).toEqual('word');
-  });
-
   it('should handle TOGGLE_EDIT', function() {
     var action = actions.toggleEdit(contact);
     var reduced = reducer(state, action);

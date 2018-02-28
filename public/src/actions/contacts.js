@@ -14,12 +14,6 @@ var actions = {
       contactLoaded: true
     };
   },
-  searchContacts: function(text) {
-    return {
-      type: types.SEARCH_CONTACTS,
-      search: text
-    };
-  },
   toggleEdit: function(contact) {
     return {
       type: types.TOGGLE_EDIT,
