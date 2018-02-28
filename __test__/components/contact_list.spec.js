@@ -13,12 +13,13 @@ describe('Contact List Component', function() {
     contacts = helpers.contacts;
     var store = helpers.store();
     var state = store.getState();
-    var getContacts = jest.fn().mockImplementation(function() {
+    var getContacts = jest.fn().mockImplementation(function(e) {
       state.contacts = contacts;
     });
+    var getContact = jest.fn();
     wrapper = Enzyme.mount(<ContactList state={state}
                                         store={store}
-                                        getContact={jest.fn()}
+                                        getContact={getContact}
                                         getContacts={getContacts}/>);
   });
 
@@ -42,8 +43,5 @@ describe('Contact List Component', function() {
   it('should call the getContact event handler when user clicks on a contact', function() {
     wrapper.find('a').first().simulate('click');
     expect(wrapper.props().getContact.mock.calls.length).toBe(1);
-  });
-
-  xit('should show a different contact when the user clicks on a different contact than the previous one', function() {
   });
 });
