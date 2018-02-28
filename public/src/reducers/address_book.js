@@ -3,7 +3,6 @@ var actionTypes = require('../actions/types');
 const INITIAL_STATE = {
   contacts: [],
   contact: {},
-  search: '',
   contactLoaded: false,
   editMode: false,
   currentlyEditing: {}
@@ -19,10 +18,6 @@ var addressBookApp = function(state=INITIAL_STATE, action) {
       var newState = Object.assign({}, state);
       newState.contactLoaded = action.contactLoaded;
       newState.contact = action.contact;
-      return newState;
-    case actionTypes.SEARCH_CONTACTS:
-      var newState = Object.assign({}, state);
-      newState.search = action.search;
       return newState;
     case actionTypes.TOGGLE_EDIT:
       var newState = Object.assign({}, state);

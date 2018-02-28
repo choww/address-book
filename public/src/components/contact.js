@@ -7,8 +7,8 @@ class Contact extends React.Component {
 
   render() {
     var contact = this.props.contact;
-    var state = this.props.state;
-    var store = this.props.store;
+    var editMode = this.props.editMode;
+    var editingContact = this.props.editingContact;
     return (
       <section className="section column is-7">
         <div className="field is-grouped is-grouped-right">
@@ -17,35 +17,35 @@ class Contact extends React.Component {
                   onClick={this.props.toggleEdit.bind(this, contact)}>
             Edit
           </button>
-          { state.editMode &&
+          { editMode &&
             <button className="button is-info"
                     name="save"
-                    onClick={this.props.saveContact}>
+                    onClick={this.props.saveContact.bind(this, this.props.currentlyEditing)}>
               Save
             </button>
           }
         </div>
         <div className="contact-name columns">
           <div className="column is-3"
-               onChange={this.props.editingContact}
+               onChange={editingContact}
                name="firstname"
-               contentEditable={state.editMode}>
+               contentEditable={editMode}>
             {contact.firstname}
           </div>
           &nbsp;
           <div className="column is-3"
-               onChange={this.props.editingContact}
+               onChange={editingContact}
                name="lastname"
-               contentEditable={state.editMode}>
+               contentEditable={editMode}>
             {contact.lastname}
           </div>
         </div>
         <div className="columns">
           <div className="column is-3">Phone</div>
           <div className="column"
-               onChange={this.props.editingContact}
+               onChange={editingContact}
                name="phone"
-               contentEditable={state.editMode}>
+               contentEditable={editMode}>
             {contact.phone}
           </div>
         </div>
@@ -53,8 +53,8 @@ class Contact extends React.Component {
           <div className="column is-3">Email</div>
           <div className="column"
                name="email"
-               onChange={this.props.editingContact}
-               contentEditable={state.editMode}>
+               onChange={editingContact}
+               contentEditable={editMode}>
             {contact.email}
           </div>
         </div>
@@ -62,8 +62,8 @@ class Contact extends React.Component {
           <div className="column is-3">Address</div>
           <div className="column"
                name="address"
-               onChange={this.props.editingContact}
-               contentEditable={state.editMode}>
+               onChange={editingContact}
+               contentEditable={editMode}>
             {contact.address}
           </div>
         </div>
