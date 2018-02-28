@@ -23404,6 +23404,8 @@ class AddressBook extends React.Component {
     this.toggleEdit = this.toggleEdit.bind(this);
     this.editingContact = this.editingContact.bind(this);
     this.saveContact = this.saveContact.bind(this);
+    this.handleInputChange = this.handleInputChange.bind(this);
+    this.handleInputSubmission = this.handleInputSubmission.bind(this);
   }
 
   // retrieve all contacts //
@@ -23447,6 +23449,24 @@ class AddressBook extends React.Component {
     this.props.store.dispatch(actions.saveContact(params));
   }
 
+  // contact search
+   handleInputChange(e) {
+    var searchTerm = e.target.value;
+    this.props.store.dispatch(actions.searchContacts(searchTerm));
+  }
+
+   handleInputSubmission(e) {
+    if (e.key == 'Enter') {
+      var that = this;
+      api.get('contacts', {name: this.props.state.search})
+         .then(function(response) {
+           var data = response.data.data.contacts;
+           that.props.store.dispatch(actions.getContacts(data));
+         });
+    }
+  }
+
+
   render() {
       var state = this.props.state;
       var store = this.props.store;
@@ -23454,7 +23474,10 @@ class AddressBook extends React.Component {
         React.createElement("div", {className: "columns"}, 
           React.createElement("section", {className: "section column is-4 hero is-fullheight contact-list"}, 
             React.createElement("h4", null, "All Contacts"), 
-            React.createElement(ContactSearch, {state: state, store: store}), 
+            React.createElement(ContactSearch, {state: state, 
+                           store: store, 
+                           handleInputChange: this.handleInputChange, 
+                           handleInputSubmission: this.handleInputSubmission}), 
             React.createElement(ContactList, {state: state, 
                          store: store, 
                          getContact: this.getContact, 
@@ -23594,32 +23617,14 @@ var api = require('../services/api');
 class ContactSearch extends React.Component {
   constructor(props) {
     super(props);
-    this.handleInputChange = this.handleInputChange.bind(this);
-    this.handleInputSubmission = this.handleInputSubmission.bind(this);
-  }
-
-  handleInputChange(e) {
-    var searchTerm = e.target.value;
-    this.props.store.dispatch(actions.searchContacts(searchTerm));
-  }
-
-   handleInputSubmission(e) {
-    if (e.key == 'Enter') {
-      var that = this;
-      api.get('contacts', {name: this.props.state.search})
-         .then(function(response) {
-           var data = response.data.data.contacts;
-           that.props.store.dispatch(actions.getContacts(data));
-         });
-    }
   }
 
   render() {
     return (
       React.createElement("input", {className: "input is-rounded", type: "text", placeholder: "Search", 
                value: this.props.state.search, 
-               onKeyPress: this.handleInputSubmission, 
-               onChange: this.handleInputChange})
+               onKeyPress: this.props.handleInputSubmission, 
+               onChange: this.props.handleInputChange})
     )
   }
 }

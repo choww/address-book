@@ -15,6 +15,8 @@ class AddressBook extends React.Component {
     this.toggleEdit = this.toggleEdit.bind(this);
     this.editingContact = this.editingContact.bind(this);
     this.saveContact = this.saveContact.bind(this);
+    this.handleInputChange = this.handleInputChange.bind(this);
+    this.handleInputSubmission = this.handleInputSubmission.bind(this);
   }
 
   // retrieve all contacts //
@@ -58,6 +60,23 @@ class AddressBook extends React.Component {
     this.props.store.dispatch(actions.saveContact(params));
   }
 
+  // contact search
+   handleInputChange(e) {
+    var searchTerm = e.target.value;
+    this.props.store.dispatch(actions.searchContacts(searchTerm));
+  }
+
+   handleInputSubmission(e) {
+    if (e.key == 'Enter') {
+      var that = this;
+      api.get('contacts', {name: this.props.state.search})
+         .then(function(response) {
+           var data = response.data.data.contacts;
+           that.props.store.dispatch(actions.getContacts(data));
+         });
+    }
+  }
+
   render() {
       var state = this.props.state;
       var store = this.props.store;
@@ -65,7 +84,10 @@ class AddressBook extends React.Component {
         <div className="columns">
           <section className="section column is-4 hero is-fullheight contact-list">
             <h4>All Contacts</h4>
-            <ContactSearch state={state} store={store}/>
+            <ContactSearch state={state}
+                           store={store}
+                           handleInputChange={this.handleInputChange}
+                           handleInputSubmission={this.handleInputSubmission}/>
             <ContactList state={state}
                          store={store}
                          getContact={this.getContact}

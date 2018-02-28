@@ -15,8 +15,9 @@ var helpers = {
     };
   },
   contact: {contactId: 1, firstname: 'first', lastname: 'last'},
-  contacts: [{contactId: 1, firstname: 'first2', lastname: 'test2'},
-             {contactId: 2, firstname: 'first3', lastname: 'test3'}]
+  contacts: [{contactId: 1, firstname: 'first', lastname: 'test'},
+             {contactId: 2, firstname: 'first2', lastname: 'test2'},
+             {contactId: 3, firstname: 'carmen', lastname: 'chow'}]
 };
 
 module.exports = helpers;
