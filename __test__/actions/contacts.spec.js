@@ -19,11 +19,6 @@ describe("Contacts Actions", function() {
     expect(actions.getContacts(contacts)).toEqual(expected);
   });
 
-  it("should create an action for searching a contact", function() {
-    var expected = { type: 'SEARCH_CONTACTS', search: 'search word' };
-    expect(actions.searchContacts('search word')).toEqual(expected);
-  });
-
   it("should create an action for toggling edit contact mode", function() {
     var expected = { type: 'TOGGLE_EDIT', currentlyEditing: contact, editMode: true };
     expect(actions.toggleEdit(contact)).toEqual(expected);
