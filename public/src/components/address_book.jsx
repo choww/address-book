@@ -12,6 +12,9 @@ class AddressBook extends React.Component {
     super(props);
     this.getContacts = this.getContacts.bind(this);
     this.getContact = this.getContact.bind(this);
+    this.toggleEdit = this.toggleEdit.bind(this);
+    this.editingContact = this.editingContact.bind(this);
+    this.saveContact = this.saveContact.bind(this);
   }
 
   // retrieve all contacts //
@@ -35,6 +38,26 @@ class AddressBook extends React.Component {
        });
   }
 
+   // toggle edit mode
+  toggleEdit(contact) {
+    this.props.store.dispatch(actions.toggleEdit(contact));
+  }
+
+  // update data as contact info is being edited
+  editingContact(e) {
+    var params = {
+      field: e.target.getAttribute('name'),
+      value: e.target.value
+    };
+    this.props.store.dispatch(actions.editingContact(params));
+  }
+
+  // actually "saves" the contact
+  saveContact() {
+    var params = this.props.state.currentlyEditing;
+    this.props.store.dispatch(actions.saveContact(params));
+  }
+
   render() {
       var state = this.props.state;
       var store = this.props.store;
@@ -43,10 +66,18 @@ class AddressBook extends React.Component {
           <section className="section column is-4 hero is-fullheight contact-list">
             <h4>All Contacts</h4>
             <ContactSearch state={state} store={store}/>
-            <ContactList state={state} store={store} getContact={this.getContact} getContacts={this.getContacts}/>
+            <ContactList state={state}
+                         store={store}
+                         getContact={this.getContact}
+                         getContacts={this.getContacts}/>
           </section>
           { state.contactLoaded &&
-            <Contact contact={state.contact} store={store} state={state}/>
+            <Contact store={store}
+                     state={state}
+                     contact={state.contact}
+                     toggleEdit={this.toggleEdit}
+                     saveContact={this.saveContact}
+                     editingContact={this.editingContact} />
           }
         </div>
       )

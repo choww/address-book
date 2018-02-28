@@ -31,7 +31,7 @@ describe('Address Book Component', function() {
   });
 
   it('should not render the Contact component by default', function() {
-    expect(wrapper.find('span')).toBeUndefined;
+    expect(wrapper.find('h2')).toHaveLength(0);
   });
 });
 

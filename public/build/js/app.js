@@ -23401,6 +23401,9 @@ class AddressBook extends React.Component {
     super(props);
     this.getContacts = this.getContacts.bind(this);
     this.getContact = this.getContact.bind(this);
+    this.toggleEdit = this.toggleEdit.bind(this);
+    this.editingContact = this.editingContact.bind(this);
+    this.saveContact = this.saveContact.bind(this);
   }
 
   // retrieve all contacts //
@@ -23424,41 +23427,9 @@ class AddressBook extends React.Component {
        });
   }
 
-  render() {
-      var state = this.props.state;
-      var store = this.props.store;
-      return (
-        React.createElement("div", {className: "columns"}, 
-          React.createElement("section", {className: "section column is-4 hero is-fullheight contact-list"}, 
-            React.createElement("h4", null, "All Contacts"), 
-            React.createElement(ContactSearch, {state: state, store: store}), 
-            React.createElement(ContactList, {state: state, store: store, getContact: this.getContact, getContacts: this.getContacts})
-          ), 
-           state.contactLoaded &&
-            React.createElement(Contact, {contact: state.contact, store: store, state: state})
-          
-        )
-      )
-  }
-}
-
-module.exports = AddressBook;
-
-},{"../actions/contacts":77,"../services/api":85,"./contact.jsx":80,"./contact_list.jsx":81,"./contact_search.jsx":82,"react":57}],80:[function(require,module,exports){
-var React = require('react');
-var actions = require('../actions/contacts');
-
-class Contact extends React.Component {
-  constructor(props) {
-    super(props);
-    this.toggleEdit = this.toggleEdit.bind(this);
-    this.editingContact = this.editingContact.bind(this);
-    this.saveContact = this.saveContact.bind(this);
-  }
-
-  // toggle edit mode
-  toggleEdit() {
-    this.props.store.dispatch(actions.toggleEdit(this.props.contact));
+   // toggle edit mode
+  toggleEdit(contact) {
+    this.props.store.dispatch(actions.toggleEdit(contact));
   }
 
   // update data as contact info is being edited
@@ -23472,36 +23443,75 @@ class Contact extends React.Component {
 
   // actually "saves" the contact
   saveContact() {
-    var params = this.props.state.currentlyEditing
+    var params = this.props.state.currentlyEditing;
     this.props.store.dispatch(actions.saveContact(params));
+  }
+
+  render() {
+      var state = this.props.state;
+      var store = this.props.store;
+      return (
+        React.createElement("div", {className: "columns"}, 
+          React.createElement("section", {className: "section column is-4 hero is-fullheight contact-list"}, 
+            React.createElement("h4", null, "All Contacts"), 
+            React.createElement(ContactSearch, {state: state, store: store}), 
+            React.createElement(ContactList, {state: state, 
+                         store: store, 
+                         getContact: this.getContact, 
+                         getContacts: this.getContacts})
+          ), 
+           state.contactLoaded &&
+            React.createElement(Contact, {store: store, 
+                     state: state, 
+                     contact: state.contact, 
+                     toggleEdit: this.toggleEdit, 
+                     saveContact: this.saveContact, 
+                     editingContact: this.editingContact})
+          
+        )
+      )
+  }
+}
+
+module.exports = AddressBook;
+
+},{"../actions/contacts":77,"../services/api":85,"./contact.jsx":80,"./contact_list.jsx":81,"./contact_search.jsx":82,"react":57}],80:[function(require,module,exports){
+var React = require('react');
+
+class Contact extends React.Component {
+  constructor(props) {
+    super(props);
   }
 
   render() {
     var contact = this.props.contact;
     var state = this.props.state;
+    var store = this.props.store;
     return (
       React.createElement("section", {className: "section column is-7"}, 
         React.createElement("div", {className: "field is-grouped is-grouped-right"}, 
           React.createElement("button", {className: "button is-primary", 
-                  onClick: this.toggleEdit}, 
+                  name: "edit", 
+                  onClick: this.props.toggleEdit.bind(this, contact)}, 
             "Edit"
           ), 
            state.editMode &&
             React.createElement("button", {className: "button is-info", 
-                    onClick: this.saveContact}, 
+                    name: "save", 
+                    onClick: this.props.saveContact}, 
               "Save"
             )
           
         ), 
         React.createElement("div", {className: "columns"}, 
           React.createElement("h2", {className: "has-text-weight-bold"}, 
-            React.createElement("span", {onChange: this.editingContact, 
+            React.createElement("div", {onChange: this.props.editingContact, 
                   name: "firstname", 
                   contentEditable: state.editMode}, 
               contact.firstname
             ), 
             " ", 
-            React.createElement("span", {onChange: this.editingContact, 
+            React.createElement("div", {onChange: this.props.editingContact, 
                   name: "lastname", 
                   contentEditable: state.editMode}, 
               contact.lastname
@@ -23510,9 +23520,8 @@ class Contact extends React.Component {
         ), 
         React.createElement("div", {className: "columns"}, 
           React.createElement("div", {className: "column is-3"}, "Phone"), 
-          React.createElement("div", {className: "column", 
+          React.createElement("div", {onChange: this.props.editingContact, 
                name: "phone", 
-               onChange: this.editingContact, 
                contentEditable: state.editMode}, 
             contact.phone
           )
@@ -23521,7 +23530,7 @@ class Contact extends React.Component {
           React.createElement("div", {className: "column is-3"}, "Email"), 
           React.createElement("div", {className: "column", 
                name: "email", 
-               onChange: this.editingContact, 
+               onChange: this.props.editingContact, 
                contentEditable: state.editMode}, 
             contact.email
           )
@@ -23530,7 +23539,7 @@ class Contact extends React.Component {
           React.createElement("div", {className: "column is-3"}, "Address"), 
           React.createElement("div", {className: "column", 
                name: "address", 
-               onChange: this.editingContact, 
+               onChange: this.props.editingContact, 
                contentEditable: state.editMode}, 
             contact.address
           )
@@ -23542,7 +23551,7 @@ class Contact extends React.Component {
 
 module.exports = Contact;
 
-},{"../actions/contacts":77,"react":57}],81:[function(require,module,exports){
+},{"react":57}],81:[function(require,module,exports){
 var React = require('react');
 
 class ContactList extends React.Component {
