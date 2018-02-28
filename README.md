@@ -13,8 +13,9 @@ CH Address Book
 # Installation
 1. Install Node & NPM
 2. In the root directory of this project, run `npm install`
-3. Start the server: `npm start`
-4. Visit http://localhost:4040 in the browser
+3. Create build: `npm run build`
+4. Start the server: `npm start`
+5. Visit http://localhost:4040 in the browser
 
 # Running Tests
 1. In the root directory of this project, run `npm test`
