@@ -11,11 +11,12 @@ CH Address Book
 * Jest 22.4.2
 
 # Installation
-1. Install Node & NPM
-2. In the root directory of this project, run `npm install`
-3. Create build: `npm run build`
-4. Start the server: `npm start`
-5. Visit http://localhost:4040 in the browser
+1. Clone this repository: `git clone https://github.com/choww/address-book-app.git`
+2. Install Node & NPM
+3. In the root directory of this project, run `npm install`
+4. Create build: `npm run build`
+5. Start the server: `npm start`
+6. Visit `http://localhost:4040` in the browser
 
 # Running Tests
 1. In the root directory of this project, run `npm test`
@@ -27,7 +28,7 @@ CH Address Book
 * User submit search form by hitting the Enter/Return key
 * Search is case-insensitive
 * Contacts are editable in the view but does not alter the contents of `graphql/contacts.json`
-* Navigate to http://localhost:4040/contacts/:id to go directly to a contact (where `:id` represents the contact ID as referenced in `graphql/contacts.json`)
+* Navigate to `http://localhost:4040/contacts/:id` to go directly to a contact (where `:id` represents the contact ID as referenced in `graphql/contacts.json`)
     * e.g. http://localhost:4040/contacts/2
 
 # Future Directions
@@ -36,3 +37,4 @@ CH Address Book
 * Validations e.g. restrict phone numbers to a certain format
 * Different search parameters e.g. search by lastname, email, etc
 * Add navigational buttons when directly visiting a contact e.g. a "Back" button
+* Make layout more responsive
