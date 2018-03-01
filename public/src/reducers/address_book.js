@@ -18,6 +18,7 @@ var addressBookApp = function(state=INITIAL_STATE, action) {
       var newState = Object.assign({}, state);
       newState.contactLoaded = action.contactLoaded;
       newState.contact = action.contact;
+      newState.contactId = action.contactId;
       return newState;
     case actionTypes.TOGGLE_EDIT:
       var newState = Object.assign({}, state);

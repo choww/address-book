@@ -5,6 +5,14 @@ class Contact extends React.Component {
     super(props);
   }
 
+  componentWillMount() {
+    if (this.props.match) {
+      var id = this.props.match.params.id;
+      this.props.getContact(id);
+    }
+  }
+
+
   render() {
     var contact = this.props.contact;
     var editMode = this.props.editMode;
