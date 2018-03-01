@@ -3,7 +3,7 @@ var React = require('react');
 var ContactProfile = require('../containers/contact_profile');
 var ContactFilter = require('../containers/contact_filter');
 
-class ContactList extends React.Component {
+class AddressBook extends React.Component {
   constructor(props) {
     super(props);
   }
@@ -39,4 +39,4 @@ class ContactList extends React.Component {
   }
 }
 
-module.exports = ContactList;
+module.exports = AddressBook;

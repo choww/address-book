@@ -8,8 +8,8 @@ class ContactSearch extends React.Component {
   render() {
     return (
       <input className="input is-rounded" type="text" placeholder="Search"
-               defaultValue={this.props.search}
-               onKeyPress={this.props.handleInputSubmission}/>
+             defaultValue=""
+             onKeyPress={this.props.handleInputSubmission}/>
     )
   }
 }
