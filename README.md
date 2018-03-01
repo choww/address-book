@@ -26,4 +26,13 @@ CH Address Book
 # Notes
 * User submit search form by hitting the Enter/Return key
 * Search is case-insensitive
-* In a real scenario, would likely want to link to real database, so edited contact information is not saved in the Redux store, and selecting a contact from the contact list queries the GraphQL schema.
+* Contacts are editable in the view but does not alter the contents of `graphql/contacts.json`
+* Navigate to http://localhost:4040/contacts/:id to go directly to a contact (where `:id` represents the contact ID as referenced in `graphql/contacts.json`)
+    * e.g. http://localhost:4040/contacts/2
+
+# Future Directions
+* Link to a database and save contact changes
+* Error catching e.g. if graphql query fails
+* Validations e.g. restrict phone numbers to a certain format
+* Different search parameters e.g. search by lastname, email, etc
+* Add navigational buttons when directly visiting a contact e.g. a "Back" button

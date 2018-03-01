@@ -1,13 +1,13 @@
 var redux = require('react-redux');
-var actions = require('../actions/contacts');
 var api = require('../services/api');
+var actions = require('../actions/contacts');
 var AddressBook = require('../components/address_book');
 
 const mapStateToProps = function(state, ownProps) {
   return {
     contacts: state.contacts,
     contact: state.contact,
-    contactLoaded: true
+    contactLoaded: state.contactLoaded,
   };
 };
 
@@ -23,7 +23,6 @@ const mapDispatchToProps = function(dispatch, ownProps) {
     },
     // retrieve one contact by ID
     getContact: function(id) {
-      //var id = e.target.getAttribute('data-id');
       api.get('contact', {contactId: id})
          .then(function(response) {
           var data = response.data.data.contact;
@@ -31,7 +30,7 @@ const mapDispatchToProps = function(dispatch, ownProps) {
          });
     }
   };
-}
+};
 
 var ContactList = redux.connect(mapStateToProps, mapDispatchToProps)(AddressBook);
 

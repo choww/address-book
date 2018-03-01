@@ -13,6 +13,13 @@ const mapStateToProps = function(state, ownProps) {
 
 const mapDispatchToProps = function(dispatch, ownProps) {
   return {
+    getContact: function(id) {
+      api.get('contact', {contactId: id})
+         .then(function(response) {
+          var data = response.data.data.contact;
+          dispatch(actions.getContact(data));
+         });
+    },
     // toggle edit mode
     toggleEdit: function(contact) {
       dispatch(actions.toggleEdit(contact));

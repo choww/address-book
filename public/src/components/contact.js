@@ -5,12 +5,20 @@ class Contact extends React.Component {
     super(props);
   }
 
+  componentWillMount() {
+    if (this.props.match) {
+      var id = this.props.match.params.id;
+      this.props.getContact(id);
+    }
+  }
+
+
   render() {
     var contact = this.props.contact;
     var editMode = this.props.editMode;
     var editingContact = this.props.editingContact;
     return (
-      <section className="section column is-7">
+      <div>
         <div className="field is-grouped is-grouped-right">
           <button className="button is-primary"
                   name="edit"
@@ -67,7 +75,7 @@ class Contact extends React.Component {
             {contact.address}
           </div>
         </div>
-      </section>
+      </div>
     )
   }
 }

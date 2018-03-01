@@ -10,14 +10,7 @@ class AddressBook extends React.Component {
   }
 
   componentWillMount() {
-    this.props.getContacts()
-  }
-
-  componentDidUpdate() {
-    var id = this.props.match.params.id
-    if (id) {
-      this.props.getContact(this.props.match.params.id);
-    }
+    this.props.getContacts();
   }
 
   render() {
@@ -30,16 +23,19 @@ class AddressBook extends React.Component {
             {
               this.props.contacts.map(function(contact) {
                 return (
-                    <NavLink key={contact.contactId}
-                             to={`/contacts/${contact.contactId}`}>
+                    <a key={contact.contactId}
+                       onClick={that.props.getContact.bind(that, contact.contactId)}>
                       {contact.lastname}, {contact.firstname}
-                    </NavLink>
+                    </a>
 
                 )
               })
             }
           </section>
-          { this.props.match.params.id && <ContactProfile/> }
+          <section className="section column is-7">
+            { this.props.contactLoaded ? <ContactProfile/>
+                                       : <h2>Click on a contact to see their profile!</h2> }
+          </section>
         </div>
     )
   }

@@ -13,7 +13,7 @@ var Root = function({store}) {
     <Provider store={store}>
       <Router>
         <Switch>
-          <Route path="/contacts/:id" component={ContactList}/>
+          <Route path="/contacts/:id" component={ContactProfile}/>
           <Route path="/" component={ContactList}/>
         </Switch>
       </Router>
