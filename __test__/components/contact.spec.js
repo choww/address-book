@@ -9,22 +9,26 @@ Enzyme.configure({ adapter: new Adapter() });
 describe('Contact Component', function() {
   // editing a contact - state.editMode = false by default //
   describe('Editing a contact', function() {
-    var wrapper, contact, fields, renderer;
+    var wrapper, fields, renderer;
 
     beforeEach(function() {
-      contact = helpers.contact;
+      var contact = helpers.contact;
       var store = helpers.store;
       fields = ['firstname', 'lastname','phone','email','address'];
-      var toggleEdit = jest.fn().mockImplementation(function() {
-        wrapper.setProps({editMode: true});
-      });
       wrapper = Enzyme.shallow(<Contact store={store}
-                                               contact={contact}
-                                               editMode={false}
-                                               currentlyEditing={{}}
-                                               toggleEdit={toggleEdit}
-                                               saveContact={jest.fn()}
-                                               editingContact={jest.fn()}/>);
+                                        match={{params: {id: 1}}}
+                                        contact={contact}
+                                        editMode={false}
+                                        getContact={jest.fn()}
+                                        currentlyEditing={{}}
+                                        toggleEdit={jest.fn()}
+                                        saveContact={jest.fn()}
+                                        editingContact={jest.fn()}/>);
+    });
+
+    it('should call the getContact event handler before component is mounted if there are match params', function() {
+      var method = wrapper.instance().props.getContact;
+      expect(method).toBeCalled();
     });
 
     it('should render self', function() {
@@ -41,12 +45,6 @@ describe('Contact Component', function() {
       wrapper.find('button[name="edit"]').simulate('click');
       var handler = wrapper.instance().props.toggleEdit;
       expect(handler).toBeCalled();
-    });
-
-    it('should set editMode to true when the Edit button is clicked', function() {
-      wrapper.find('button[name="edit"]').simulate('click');
-      var prop = wrapper.instance().props.editMode;
-      expect(prop).toBe(true);
     });
 
     it('should call editingContact event handler when changing a field', function() {

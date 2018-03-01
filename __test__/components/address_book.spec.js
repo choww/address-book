@@ -19,11 +19,11 @@ describe('Address Book Component', function() {
   });
 
   it('should render self', function() {
-    var sample = wrapper.find('section').hasClass('contact-list');
-    expect(sample).toBe(true);
+    var sample = wrapper.find('.contact-list');
+    expect(sample).toBeDefined;
   });
 
-  it('should call the getContacts event handler when component is mounted', function() {
+  it('should call the getContacts event handler before component is mounted', function() {
     var method = wrapper.instance().props.getContacts;
     expect(method).toBeCalled();
   });
