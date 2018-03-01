@@ -22,9 +22,11 @@ class AddressBook extends React.Component {
             <ContactFilter/>
             {
               this.props.contacts.map(function(contact) {
+                var id = contact.contactId;
                 return (
-                    <a key={contact.contactId}
-                       onClick={that.props.getContact.bind(that, contact.contactId)}>
+                    <a key={id}
+                       className={id == that.props.contact.contactId ? 'active' : ''}
+                       onClick={that.props.getContact.bind(that, id)}>
                       {contact.lastname}, {contact.firstname}
                     </a>
 
