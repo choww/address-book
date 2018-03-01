@@ -1,22 +1,18 @@
 var redux = require('react-redux');
-var actions = require('../actions/contacts');
 var api = require('../services/api');
+var actions = require('../actions/contacts');
 var AddressBook = require('../components/address_book');
 
 const mapStateToProps = function(state, ownProps) {
   return {
     contacts: state.contacts,
     contact: state.contact,
-    contactLoaded: true,
-    contactId: state.contactId
+    contactLoaded: state.contactLoaded,
   };
 };
 
 const mapDispatchToProps = function(dispatch, ownProps) {
   return {
-    getContactID: function(id) {
-      dispatch(actions.getID(id));
-    },
     // retrieve all contacts
     getContacts: function() {
       api.get('contacts', {}, 'contactId,firstname,lastname')
@@ -27,7 +23,6 @@ const mapDispatchToProps = function(dispatch, ownProps) {
     },
     // retrieve one contact by ID
     getContact: function(id) {
-      console.log(ownProps.contacts);
       api.get('contact', {contactId: id})
          .then(function(response) {
           var data = response.data.data.contact;
@@ -35,7 +30,7 @@ const mapDispatchToProps = function(dispatch, ownProps) {
          });
     }
   };
-}
+};
 
 var ContactList = redux.connect(mapStateToProps, mapDispatchToProps)(AddressBook);
 

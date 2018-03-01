@@ -18,7 +18,7 @@ class Contact extends React.Component {
     var editMode = this.props.editMode;
     var editingContact = this.props.editingContact;
     return (
-      <section className="section column is-7">
+      <div>
         <div className="field is-grouped is-grouped-right">
           <button className="button is-primary"
                   name="edit"
@@ -75,7 +75,7 @@ class Contact extends React.Component {
             {contact.address}
           </div>
         </div>
-      </section>
+      </div>
     )
   }
 }

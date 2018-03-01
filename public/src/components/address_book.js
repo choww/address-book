@@ -32,7 +32,10 @@ class AddressBook extends React.Component {
               })
             }
           </section>
-          <ContactProfile/>
+          <section className="section column is-7">
+            { this.props.contactLoaded ? <ContactProfile/>
+                                       : <h2>Click on a contact to see their profile!</h2> }
+          </section>
         </div>
     )
   }
