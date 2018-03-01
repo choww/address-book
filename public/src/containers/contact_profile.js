@@ -1,10 +1,12 @@
 var redux = require('react-redux');
+var api = require('../services/api');
 var actions = require('../actions/contacts');
 var Contact = require('../components/contact');
 
 const mapStateToProps = function(state, ownProps) {
   return {
     editMode: state.editMode,
+    contact: state.contact,
     currentlyEditing: state.currentlyEditing
   }
 };

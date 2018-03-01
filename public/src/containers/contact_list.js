@@ -7,7 +7,7 @@ const mapStateToProps = function(state, ownProps) {
   return {
     contacts: state.contacts,
     contact: state.contact,
-    contactLoaded: state.contactLoaded
+    contactLoaded: true
   };
 };
 
@@ -22,8 +22,8 @@ const mapDispatchToProps = function(dispatch, ownProps) {
        });
     },
     // retrieve one contact by ID
-    getContact: function(e) {
-      var id = e.target.getAttribute('data-id');
+    getContact: function(id) {
+      //var id = e.target.getAttribute('data-id');
       api.get('contact', {contactId: id})
          .then(function(response) {
           var data = response.data.data.contact;

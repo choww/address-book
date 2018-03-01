@@ -13,6 +13,13 @@ class AddressBook extends React.Component {
     this.props.getContacts()
   }
 
+  componentDidUpdate() {
+    var id = this.props.match.params.id
+    if (id) {
+      this.props.getContact(this.props.match.params.id);
+    }
+  }
+
   render() {
     var that = this;
     return (
@@ -23,23 +30,16 @@ class AddressBook extends React.Component {
             {
               this.props.contacts.map(function(contact) {
                 return (
-                  <div className="contact" key={contact.contactId}>
-                    <NavLink to={`/contacts/${contact.contactId}`}>
+                    <NavLink key={contact.contactId}
+                             to={`/contacts/${contact.contactId}`}>
                       {contact.lastname}, {contact.firstname}
                     </NavLink>
 
-                    {//<a onClick={that.props.getContact} data-id={contact.contactId}>
-                     //  {contact.lastname}, {contact.firstname}
-                     //</a>
-                    }
-                  </div>
                 )
               })
             }
           </section>
-          { this.props.contactLoaded &&
-           <ContactProfile contact={this.props.contact}/>
-          }
+          { this.props.match.params.id && <ContactProfile/> }
         </div>
     )
   }
