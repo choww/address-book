@@ -5,16 +5,17 @@ var ContactList = require('../containers/contact_list');
 var ContactProfile = require('../containers/contact_profile');
 var Router = router.BrowserRouter;
 var Route = router.Route;
+var Switch = router.Switch;
 var Provider = reactRedux.Provider;
 
 var Root = function({store}) {
   return (
     <Provider store={store}>
       <Router>
-        <div>
+        <Switch>
+          <Route path="/contacts/:id" component={ContactList}/>
           <Route path="/" component={ContactList}/>
-          <Route path="/contacts/:id" component={ContactProfile}/>
-        </div>
+        </Switch>
       </Router>
     </Provider>
   )
