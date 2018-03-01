@@ -30,7 +30,6 @@ const mapDispatchToProps = function(dispatch, ownProps) {
           dispatch(actions.getContact(data));
          });
     }
-
   };
 }
 
