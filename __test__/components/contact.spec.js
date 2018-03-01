@@ -13,17 +13,23 @@ describe('Contact Component', function() {
 
     beforeEach(function() {
       contact = helpers.contact;
-      var store = helpers.store();
-      var state = store.getState();
+      var store = helpers.store;
+      fields = ['firstname', 'lastname','phone','email','address'];
       var toggleEdit = jest.fn().mockImplementation(function() {
-        state.editMode = true;
+        wrapper.setProps({editMode: true});
       });
-      wrapper = Enzyme.mount(<Contact state={state}
-                                      store={store}
-                                      contact={contact}
-                                      toggleEdit={toggleEdit}
-                                      editingContact={jest.fn()}
-                                      saveContact={jest.fn()}/>);
+      wrapper = Enzyme.shallow(<Contact store={store}
+                                               contact={contact}
+                                               editMode={false}
+                                               currentlyEditing={{}}
+                                               toggleEdit={toggleEdit}
+                                               saveContact={jest.fn()}
+                                               editingContact={jest.fn()}/>);
+    });
+
+    it('should render self', function() {
+      var element = wrapper.find('[contentEditable]');
+      expect(element).toHaveLength(fields.length);
     });
 
     it('should not display a Save button by default', function() {
@@ -33,19 +39,19 @@ describe('Contact Component', function() {
 
     it('should call the toggleEdit event handler when the Edit button is clicked', function() {
       wrapper.find('button[name="edit"]').simulate('click');
-      var handler = wrapper.props().toggleEdit;
+      var handler = wrapper.instance().props.toggleEdit;
       expect(handler).toBeCalled();
     });
 
-    it('should set state.editMode to true when the Edit button is clicked', function() {
+    it('should set editMode to true when the Edit button is clicked', function() {
       wrapper.find('button[name="edit"]').simulate('click');
-      var state = wrapper.props().state.editMode;
-      expect(state).toBe(true);
+      var prop = wrapper.instance().props.editMode;
+      expect(prop).toBe(true);
     });
 
     it('should call editingContact event handler when changing a field', function() {
-      wrapper.find('[contentEditable]').first().simulate('change');
-      expect(wrapper.props().editingContact).toBeCalled();
+      wrapper.find('[contentEditable]').first().simulate('change', {target: {value: 'hi'}});
+      expect(wrapper.instance().props.editingContact).toBeCalled();
     });
   });
 
@@ -53,37 +59,21 @@ describe('Contact Component', function() {
   describe('Saving a contact', function() {
     var fields, wrapper, contact;
     beforeEach(function() {
+      var store = helpers.store;
       contact = helpers.contact;
-      fields = ['firstname', 'lastname', 'email', 'phone', 'address'];
-      var store = helpers.store();
-      var state = store.getState();
-      state.editMode = true;
-      var saveContact = jest.fn(function() {
-        state.editMode = false;
-        state.currentlyEditing = {};
-      });
-      wrapper = Enzyme.mount(<Contact state={state}
-                                    store={store}
-                                    contact={contact}
-                                    toggleEdit={jest.fn()}
-                                    editingContact={jest.fn()}
-                                    saveContact={saveContact}/>);
+      wrapper = Enzyme.shallow(<Contact store={store}
+                                               contact={contact}
+                                               editMode={true}
+                                               currentlyEditing={{}}
+                                               toggleEdit={jest.fn()}
+                                               saveContact={jest.fn()}
+                                               editingContact={jest.fn()}/>);
       wrapper.find('button[name="save"]').simulate('click');
     });
 
     it('should call the saveContact handler when the Save button is clicked', function() {
-      var method = wrapper.props().saveContact;
+      var method = wrapper.instance().props.saveContact;
       expect(method).toBeCalled();
-    });
-
-    it('should set state.editMode to false when Save button is clicked', function() {
-      var state = wrapper.props().state.editMode;
-      expect(state).toBe(false);
-    });
-
-    it('should set state.currentlyEditing back to {} when Save button is clicked', function() {
-      var state = wrapper.props().state.currentlyEditing;
-      expect(state).toEqual({});
     });
   });
 });
