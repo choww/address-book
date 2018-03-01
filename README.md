@@ -16,7 +16,7 @@ CH Address Book
 3. In the root directory of this project, run `npm install`
 4. Create build: `npm run build`
 5. Start the server: `npm start`
-6. Visit `http://localhost:4040` in the browser
+6. Visit http://localhost:4040 in the browser
 
 # Running Tests
 1. In the root directory of this project, run `npm test`
@@ -28,7 +28,7 @@ CH Address Book
 * User submit search form by hitting the Enter/Return key
 * Search is case-insensitive
 * Contacts are editable in the view but does not alter the contents of `graphql/contacts.json`
-* Navigate to `http://localhost:4040/contacts/:id` to go directly to a contact (where `:id` represents the contact ID as referenced in `graphql/contacts.json`)
+* Navigate to http://localhost:4040/contacts/:id to go directly to a contact (where `:id` represents the contact ID as referenced in `graphql/contacts.json`)
     * e.g. http://localhost:4040/contacts/2
 
 # Future Directions
